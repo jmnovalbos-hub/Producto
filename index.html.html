@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unisport · Entorno de formación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F4F0; --surface:#FFFFFF; --surface-2:#ECEEE6; --ink:#0E0E0E; --muted:#5A5D55; --line:#DADBD3;
+  --brand:#2F8F0B; --brand-deep:#0B0B0B; --brand-ink:#FFFFFF; --mint:#D6FFB8; --sun:#8AFF33; --coral:#E0461F;
+  --c-masters:#2F8F0B; --c-cursos:#1E5BD8; --c-espec:#7A3FE0; --c-fp:#1E5BD8; --c-pl:#B7790A; --c-opos:#7A3FE0;
+  --t-masters:#E2F6D3; --t-cursos:#DFE8FB; --t-espec:#ECE2FB; --t-fp:#DFE8FB; --t-pl:#FBEBCF; --t-opos:#ECE2FB;
+  --ok:#2F8F0B; --ko:#C2412D; --land:#E6E8E0; --sea:#F1F2EC;
+  color-scheme: light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D0D0D; --surface:#171717; --surface-2:#222420; --ink:#ECEEE8; --muted:#A3A79C; --line:#2E302B;
+    --brand:#8AFF33; --brand-deep:#000000; --brand-ink:#0B0B0B; --mint:#24401A; --sun:#8AFF33; --coral:#FF7A57;
+    --c-masters:#7BE33A; --c-cursos:#7FA6F5; --c-espec:#B497F2; --c-fp:#7FA6F5; --c-pl:#E7A93B; --c-opos:#B497F2;
+    --t-masters:#1C3313; --t-cursos:#1B2A48; --t-espec:#2C2142; --t-fp:#1B2A48; --t-pl:#3A2D12; --t-opos:#2C2142;
+    --ok:#8AFF33; --ko:#F08A74; --land:#22241F; --sea:#171717; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D0D0D; --surface:#171717; --surface-2:#222420; --ink:#ECEEE8; --muted:#A3A79C; --line:#2E302B;
+  --brand:#8AFF33; --brand-deep:#000000; --brand-ink:#0B0B0B; --mint:#24401A; --sun:#8AFF33; --coral:#FF7A57;
+  --c-masters:#7BE33A; --c-cursos:#7FA6F5; --c-espec:#B497F2; --c-fp:#7FA6F5; --c-pl:#E7A93B; --c-opos:#B497F2;
+  --t-masters:#1C3313; --t-cursos:#1B2A48; --t-espec:#2C2142; --t-fp:#1B2A48; --t-pl:#3A2D12; --t-opos:#2C2142;
+  --ok:#8AFF33; --ko:#F08A74; --land:#22241F; --sea:#171717; color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3,h4{font-family:"Barlow Condensed","Barlow",system-ui,sans-serif;line-height:1.1;margin:0;letter-spacing:-.01em}
+a{color:var(--brand)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:6px}
+svg{display:block}
+
+.app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+nav.side{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow:auto;padding:22px 16px;background:var(--brand-deep);color:#EDEDED;display:flex;flex-direction:column;gap:18px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:40px;height:40px;border-radius:10px;background:#8AFF33;display:grid;place-items:center;color:#0B0B0B;font:800 19px "Barlow Condensed",sans-serif}
+.logo b{font-family:"Barlow Condensed",sans-serif;font-size:17px;display:block;line-height:1.1;color:#fff}
+.logo span{font-size:13px;color:#B8BCB2}
+.path{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.path a{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:10px;text-decoration:none;color:#DADADA;font-weight:500;font-size:15px}
+.path a:hover{background:rgba(255,255,255,.08)}
+.path a[aria-current="page"]{background:#fff;color:#0B0B0B;font-weight:700}
+.dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.35);display:grid;place-items:center;font-size:11px;font-weight:700}
+.path a.done .dot{background:var(--sun);border-color:var(--sun);color:#0B0B0B}
+.path a[aria-current="page"] .dot{border-color:#0B0B0B}
+.path .sep{height:1px;background:rgba(255,255,255,.15);margin:8px 4px}
+.side-progress{margin-top:auto;font-size:13px;color:#B8BCB2}
+.side-points{font:800 28px/1 "Barlow Condensed",sans-serif;color:var(--sun)}
+.bar{height:8px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--sun);width:0;transition:width .4s}
+.theme-btn{border:1px solid rgba(255,255,255,.3);background:transparent;color:#EDEDED;border-radius:8px;padding:6px 10px;font-size:13px;margin-top:12px}
+
+main{padding:0 clamp(18px,4vw,56px) 80px;max-width:1120px;width:100%}
+.view{display:none}
+.view.active{display:block}
+.lead{font-size:18px;color:var(--muted);max-width:62ch;margin:14px 0 0}
+p{max-width:70ch}
+section{margin-top:44px}
+h2{font-size:clamp(28px,3.4vw,42px)}
+h3{font-size:22px}
+
+/* Banner de módulo */
+.banner{margin:0 calc(-1*clamp(18px,4vw,56px)) 30px;padding:38px clamp(18px,4vw,56px) 34px;background:var(--bc,var(--brand));color:#fff;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.banner .step{font-weight:700;font-size:14px;opacity:.85}
+.banner h2{color:#fff;margin-top:6px;max-width:18ch}
+.banner p{color:rgba(255,255,255,.88);font-size:18px;margin:12px 0 0;max-width:56ch}
+.banner .art{width:150px;height:150px;flex:none}
+.banner::after{content:"";position:absolute;right:-60px;bottom:-90px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.08)}
+
+/* Hero inicio */
+.hero{margin:0 calc(-1*clamp(18px,4vw,56px));padding:46px clamp(18px,4vw,56px) 40px;background:#0B0B0B;color:#fff;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;position:relative;overflow:hidden}
+.hero .kick{font-weight:700;color:#8AFF33;font-size:15px}
+.hero h1{font-size:clamp(46px,6.8vw,96px);font-weight:800;line-height:.92;letter-spacing:-.01em;text-transform:none;margin-top:10px}
+.hero h1 .q{display:block;color:#8AFF33}
+.hero p{color:rgba(255,255,255,.9);font-size:18px;max-width:46ch}
+.hero-art{width:100%;max-width:440px;justify-self:end}
+.cta{display:inline-flex;align-items:center;gap:8px;margin-top:22px;background:var(--brand);color:var(--brand-ink);border:none;padding:13px 22px;border-radius:999px;font-weight:700;text-decoration:none}
+.hero .cta,.cta.sun{background:var(--sun);color:#0B0B0B}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:26px}
+.fact{background:var(--surface);border-radius:16px;padding:18px;display:flex;gap:12px;align-items:center;border:1px solid var(--line)}
+.fact .ic{width:44px;height:44px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;flex:none;color:var(--brand)}
+.fact strong{font:800 28px/1 "Barlow Condensed",sans-serif;display:block}
+.fact span{color:var(--muted);font-size:14px;line-height:1.3;display:block;margin-top:2px}
+
+.modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:18px}
+.mod{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;text-decoration:none;color:var(--ink);display:flex;gap:12px;align-items:center}
+.mod:hover{border-color:var(--brand)}
+.mod .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;background:var(--mc);color:#fff;position:relative}
+.mod.done .ic::after{content:"✓";position:absolute;right:-6px;top:-6px;width:20px;height:20px;border-radius:50%;background:var(--sun);color:#0B0B0B;font-size:12px;font-weight:800;display:grid;place-items:center}
+.mod b{display:block;font-size:16px}
+.mod small{color:var(--muted);font-size:13.5px;line-height:1.35;display:block;margin-top:2px}
+
+/* Bloques */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
+.pillar{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.pillar .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--pc,var(--brand));color:#fff;margin-bottom:12px}
+.pillar b{display:block;font-size:17px;margin-bottom:4px}
+.pillar p{margin:0;color:var(--muted);font-size:15px}
+.callout{background:var(--surface-2);border-radius:18px;padding:22px 24px;margin-top:22px}
+.callout.sun{background:var(--sun);color:#0B0B0B}
+.callout.sun a{color:#0B0B0B}
+.callout h3{margin-bottom:6px}
+.callout p{margin:6px 0 0}
+.tip{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--sun);border-radius:12px;padding:14px 16px;margin-top:18px;font-size:15px}
+.tip .ic{flex:none;color:var(--c-pl)}
+.tip p{margin:0}
+.warn{border-left-color:var(--ko)}
+.warn .ic{color:var(--ko)}
+.big-stat{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;margin-top:8px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+.big-stat p{max-width:40ch;font-size:19px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500}
+.chip.new{border-color:var(--sun);background:color-mix(in srgb,var(--sun) 28%,var(--surface))}
+.logo-wall{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.logo-tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;height:74px;display:grid;place-items:center;font:700 17px "Barlow Condensed",sans-serif;text-align:center;padding:8px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;margin-top:22px;counter-reset:s}
+.stepc{position:relative;padding:18px 18px 18px 0}
+.stepc .num{width:44px;height:44px;border-radius:50%;background:var(--sc,var(--brand));color:#fff;display:grid;place-items:center;font:800 19px "Barlow Condensed",sans-serif;position:relative;z-index:1}
+.stepc::before{content:"";position:absolute;left:44px;right:0;top:40px;height:4px;background:var(--line)}
+.stepc:last-child::before{display:none}
+.stepc b{display:block;margin-top:12px;font-size:16px}
+.stepc p{margin:4px 0 0;color:var(--muted);font-size:14.5px;padding-right:10px}
+
+/* Catálogo */
+.lines{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:22px}
+.line-btn{text-align:left;background:var(--lt);border:2px solid transparent;border-radius:18px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.line-btn[aria-pressed="true"]{border-color:var(--lc)}
+.line-btn .ic{grid-row:span 3;width:50px;height:50px;border-radius:14px;background:var(--lc);color:#fff;display:grid;place-items:center;order:2}
+.line-btn b{font:700 19px "Barlow Condensed",sans-serif;color:var(--lc)}
+.line-btn span{font-size:14px;color:var(--muted)}
+.line-btn .count{font:800 32px/1 "Barlow Condensed",sans-serif;color:var(--ink)}
+.chartbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-top:18px}
+.chartbox h4{font-size:17px;margin-bottom:10px}
+.hbar{display:grid;grid-template-columns:minmax(120px,190px) 1fr 34px;gap:10px;align-items:center;font-size:14px;margin:5px 0}
+.hbar .track{height:14px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.hbar .track i{display:block;height:100%;border-radius:99px;background:var(--lc)}
+.hbar b{text-align:right}
+.search{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.search input[type=search]{flex:1;min-width:220px;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.search label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.line-desc{margin-top:16px;color:var(--muted)}
+.groups{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+details.group{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 16px}
+details.group summary{cursor:pointer;padding:14px 0;font-weight:700;display:flex;gap:12px;align-items:center;list-style:none}
+details.group summary::-webkit-details-marker{display:none}
+details.group summary .gdot{width:12px;height:12px;border-radius:4px;background:var(--lc);flex:none}
+details.group summary small{color:var(--muted);font-weight:500;margin-left:auto}
+details.group summary::after{content:"+";font-size:20px;line-height:1;color:var(--muted)}
+details.group[open] summary::after{content:"−"}
+.items{list-style:none;margin:0 0 14px;padding:0;columns:2 280px;column-gap:28px}
+.items li{break-inside:avoid;padding:6px 0;border-top:1px solid var(--line);font-size:15px}
+.items li a{color:var(--ink);text-decoration:none}
+.items li a:hover{color:var(--brand);text-decoration:underline}
+.tag{display:inline-block;font-size:11px;font-weight:700;background:var(--sun);color:#0B0B0B;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.empty{color:var(--muted);padding:20px 0}
+
+/* Fichas */
+.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:22px}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column}
+.fcard:hover{border-color:var(--lc)}
+.fcard .top{background:var(--lt);height:110px;display:grid;place-items:center;position:relative}
+.fcard .top .badge{position:absolute;left:12px;top:12px;background:var(--lc);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}
+.fcard .top .ic{width:64px;height:64px;border-radius:20px;background:var(--lc);color:#fff;display:grid;place-items:center;transform:rotate(-6deg)}
+.fcard .body{padding:14px 16px 16px}
+.fcard .body b{font:700 18px/1.2 "Barlow Condensed",sans-serif;display:block}
+.fcard .body span{font-size:13.5px;color:var(--muted)}
+.ficha-detail{margin-top:22px;background:var(--surface);border:2px solid var(--lc);border-radius:22px;overflow:hidden}
+.ficha-detail .head{background:var(--lc);color:#fff;padding:24px 26px;display:flex;gap:18px;align-items:center}
+.ficha-detail .head .ic{width:70px;height:70px;border-radius:20px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
+.ficha-detail .head h3{font-size:clamp(22px,2.6vw,30px);color:#fff}
+.ficha-detail .head small{opacity:.9;font-size:14px}
+.ficha-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;padding:22px 26px}
+.ficha-grid h4{font-size:15px;color:var(--lc);margin-bottom:6px}
+.ficha-grid p,.ficha-grid ul{margin:0;font-size:15px}
+.ficha-grid ul{padding-left:18px}
+.ficha-say{margin:0 26px 22px;background:var(--lt);border-radius:14px;padding:16px 18px;font:600 18px/1.4 "Barlow Condensed",sans-serif}
+.ficha-foot{padding:0 26px 22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--muted)}
+
+/* Tabla homologación */
+.htable{width:100%;border-collapse:separate;border-spacing:0;margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:15px}
+.htable th,.htable td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.htable th{background:var(--surface-2);font-size:14px}
+.htable tr:last-child td{border-bottom:none}
+.yes,.no{display:inline-flex;align-items:center;gap:6px;font-weight:700;border-radius:999px;padding:2px 10px;font-size:13px;white-space:nowrap}
+.yes{background:color-mix(in srgb,var(--ok) 18%,var(--surface));color:var(--ok)}
+.no{background:color-mix(in srgb,var(--ko) 14%,var(--surface));color:var(--ko)}
+.scroll{overflow-x:auto}
+.cp-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:center}
+.do-dont{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.dd{border-radius:16px;padding:18px 20px}
+.dd.do{background:color-mix(in srgb,var(--ok) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--ok) 35%,var(--line))}
+.dd.dont{background:color-mix(in srgb,var(--ko) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ko) 35%,var(--line))}
+.dd h4{font-size:17px;margin-bottom:6px}
+.dd ul{margin:0;padding-left:18px;font-size:15px}
+.dd li{margin:5px 0}
+
+/* Mapa */
+.map-wrap{display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:start;margin-top:10px}
+.map{background:var(--sea);border:1px solid var(--line);border-radius:22px;padding:10px;position:relative}
+.map svg{width:100%;height:auto}
+.map .city{cursor:pointer}
+.map .city circle.pin{transition:r .15s}
+.map .city:hover circle.pin,.map .city.on circle.pin{r:9}
+.map-label{font:600 13px Barlow,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--sea);stroke-width:4px;pointer-events:none}
+.city-list{max-height:520px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:8px}
+.city-list button{display:flex;width:100%;justify-content:space-between;gap:8px;text-align:left;border:none;background:transparent;padding:8px 10px;border-radius:10px;font-size:14.5px}
+.city-list button:hover,.city-list button.on{background:var(--surface-2)}
+.city-list .n{font-size:11px;font-weight:700;background:var(--sun);color:#0B0B0B;border-radius:6px;padding:1px 6px}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+
+/* Argumentario */
+.motives{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:22px}
+.motive{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.motive .mh{background:var(--lt);padding:16px 18px;display:flex;gap:12px;align-items:center}
+.motive .mh .ic{width:44px;height:44px;border-radius:12px;background:var(--lc);color:#fff;display:grid;place-items:center;flex:none}
+.motive .say{font:700 18px/1.25 "Barlow Condensed",sans-serif;margin:0}
+.motive .mb{padding:14px 18px 18px}
+.motive ul{margin:8px 0 0;padding-left:20px;font-size:15px}
+.motive li{margin:4px 0}
+.motive .to{font-size:14px;color:var(--muted);margin:0}
+
+/* Opiniones */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:22px}
+.quote{background:var(--surface);border:1px solid var(--line);border-radius:20px 20px 20px 4px;padding:20px;margin:0;position:relative}
+.quote::before{content:"“";position:absolute;right:16px;top:-6px;font:800 80px/1 "Barlow Condensed",serif;color:var(--mint)}
+.quote blockquote{margin:0;font-size:16px;position:relative}
+.quote figcaption{margin-top:14px;font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:center}
+.quote .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;flex:none}
+.quote figcaption b{color:var(--ink);display:block}
+
+/* Práctica */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,30px);margin-top:22px}
+.qmeta{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);gap:12px;flex-wrap:wrap}
+.pbar{height:6px;border-radius:99px;background:var(--surface-2);margin-top:10px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--brand)}
+.qtext{font:700 clamp(21px,2.6vw,28px)/1.25 "Barlow Condensed",sans-serif;margin:16px 0 18px}
+.client{display:flex;gap:14px;align-items:flex-start;margin:16px 0 18px}
+.client .bubble{background:var(--surface-2);border-radius:4px 18px 18px 18px;padding:14px 18px;font:700 clamp(19px,2.4vw,24px)/1.3 "Barlow Condensed",sans-serif}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;padding:13px 16px;border-radius:12px;border:2px solid var(--line);background:var(--bg)}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.opt.wrong{border-color:var(--ko);background:color-mix(in srgb,var(--ko) 12%,var(--surface))}
+.opt.meh{border-color:var(--c-pl);background:color-mix(in srgb,var(--c-pl) 12%,var(--surface))}
+.opt:disabled{cursor:default}
+.feedback{margin-top:14px;font-size:15px;min-height:1.6em}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.btn{border:none;background:var(--brand);color:var(--brand-ink);padding:11px 20px;border-radius:999px;font-weight:700;text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;border:2px solid var(--line);color:var(--ink)}
+.drill-name{font:800 clamp(24px,3.4vw,38px)/1.15 "Barlow Condensed",sans-serif;margin:16px 0 20px}
+.drill-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.drill-opts .opt{display:flex;gap:10px;align-items:center}
+.drill-opts .opt .ic{width:34px;height:34px;border-radius:10px;background:var(--lc);color:#fff;display:grid;place-items:center;flex:none}
+.result{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.practice-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px}
+.pcard{border:none;text-align:left;border-radius:20px;padding:22px;color:#fff;background:var(--pc);display:flex;flex-direction:column;gap:8px;min-height:180px}
+.pcard b{font:800 22px/1.1 "Barlow Condensed",sans-serif}
+.pcard span{opacity:.9;font-size:15px}
+.pcard .score{margin-top:auto;font-weight:700;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;align-self:flex-start;font-size:14px}
+
+/* Ranking */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end;margin-top:24px;max-width:640px}
+.pod{text-align:center}
+.pod .av{width:58px;height:58px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;color:#fff;font:800 22px "Barlow Condensed",sans-serif}
+.pod .block{border-radius:14px 14px 0 0;display:grid;place-items:center;color:#fff;font:800 30px "Barlow Condensed",sans-serif}
+.pod b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod small{color:var(--muted)}
+.rtable{width:100%;border-collapse:collapse;margin-top:20px;background:var(--surface);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.rtable th,.rtable td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:15px}
+.rtable th{background:var(--surface-2);font-size:13px}
+.rtable td.n{text-align:right;font-variant-numeric:tabular-nums}
+.rtable tr.me td{background:color-mix(in srgb,var(--sun) 22%,var(--surface));font-weight:700}
+.who{display:flex;gap:10px;align-items:center}
+.who .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex:none}
+.points-explain{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:16px}
+.points-explain div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--muted)}
+.points-explain b{display:block;font:800 22px "Barlow Condensed",sans-serif;color:var(--ink)}
+
+.profia-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.mock{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 18px 40px -24px rgba(19,39,31,.45)}
+.mock .bar2{display:flex;gap:6px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.mock .bar2 i{width:10px;height:10px;border-radius:50%;background:var(--line);display:inline-block}
+.mock .split{display:grid;grid-template-columns:.8fr 1.2fr;min-height:300px}
+.mock .pdf{background:var(--c-opos);margin:12px;border-radius:10px;color:#fff;padding:16px;font:700 14px/1.3 "Barlow Condensed",sans-serif;display:flex;flex-direction:column;gap:8px}
+.mock .pdf span{display:block;height:6px;border-radius:3px;background:rgba(255,255,255,.35)}
+.mock .chatp{padding:12px 14px;display:flex;flex-direction:column;gap:10px;font-size:13.5px}
+.mock .msg{border-radius:12px;padding:9px 12px;max-width:92%}
+.mock .msg.ai{background:var(--surface-2)}
+.mock .msg.me{background:var(--c-opos);color:#fff;align-self:flex-end}
+.mock .tools{display:flex;flex-wrap:wrap;gap:6px}
+.mock .tools span{border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:12px;display:inline-flex;gap:4px;align-items:center}
+.avail{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:16px}
+.avail .fam{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.avail .fam h4{font-size:16px;margin-bottom:8px}
+.avail ul{list-style:none;margin:0;padding:0;font-size:14.5px}
+.avail li{display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-top:1px solid var(--line)}
+.st{flex:none;font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;margin-top:2px}
+.st.y{background:color-mix(in srgb,var(--c-opos) 18%,var(--surface));color:var(--c-opos)}
+.st.n{background:color-mix(in srgb,var(--ko) 14%,var(--surface));color:var(--ko)}
+.st.q{background:var(--surface-2);color:var(--muted)}
+.st.pod{background:var(--sun);color:#0B0B0B}
+.tag.ai{background:var(--c-opos);color:#fff}
+.timeline{margin-top:18px;border-left:3px solid var(--c-opos);padding-left:18px;display:flex;flex-direction:column;gap:14px}
+.timeline div{position:relative;font-size:15px}
+.timeline div::before{content:"";position:absolute;left:-26px;top:5px;width:13px;height:13px;border-radius:50%;background:var(--surface);border:3px solid var(--c-opos)}
+.timeline b{display:block;font-size:13px;color:var(--c-opos)}
+@media (max-width:900px){.profia-grid{grid-template-columns:1fr}}
+.gsearch{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px 10px;color:#CFCFCF}
+.gsearch:focus-within{background:#fff;color:#0B0B0B;border-color:#fff}
+.gsearch input{flex:1;min-width:0;border:none;background:transparent;color:inherit;font:inherit;font-size:15px;outline:none}
+.gsearch input::placeholder{color:inherit;opacity:.8}
+.gsearch kbd{font:600 12px Barlow,sans-serif;border:1px solid currentColor;border-radius:5px;padding:0 6px;opacity:.7}
+.gsearch:focus-within kbd{display:none}
+.gpanel{position:fixed;z-index:50;left:286px;top:calc(16px + env(safe-area-inset-top,0px));width:min(620px,calc(100vw - 310px));max-height:calc(100vh - 32px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -20px rgba(6,74,54,.45)}
+.ghead{position:sticky;top:0;background:var(--surface);display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
+.gclose{border:none;background:var(--surface-2);border-radius:8px;width:30px;height:30px}
+.gres{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:none;background:transparent;padding:10px 16px;border-bottom:1px solid var(--line)}
+.gres:hover,.gres.sel{background:var(--surface-2)}
+.gres .ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;background:var(--gc)}
+.gres b{display:block;font-size:15px}
+.gres b mark{background:color-mix(in srgb,var(--sun) 60%,transparent);color:inherit;border-radius:3px}
+.gres small{display:block;color:var(--muted);font-size:13px;line-height:1.35}
+.gres .k{font-size:11px;font-weight:700;color:var(--gc);margin-left:auto;flex:none;padding-top:2px}
+.gempty{padding:22px 16px;color:var(--muted);font-size:15px}
+.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{box-shadow:0 0 0 4px var(--sun)}100%{box-shadow:0 0 0 0 transparent}}
+@media (min-width:1600px){.gpanel{left:316px;width:720px}}
+@media (max-width:900px){.gpanel{left:10px;right:10px;width:auto;top:calc(120px + env(safe-area-inset-top,0px));max-height:calc(100vh - 140px)}.gsearch kbd{display:none}}
+.rank-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+.rank-card{background:#0B0B0B;color:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.rank-card .rk{width:48px;height:48px;border-radius:12px;background:#8AFF33;color:#0B0B0B;display:grid;place-items:center;margin-bottom:6px}
+.rank-card small{color:#8AFF33;font-weight:700;font-size:14px}
+.rank-card b{font:800 24px/1.1 "Barlow Condensed",sans-serif}
+.rank-card span{color:#C9CCC3;font-size:14.5px}
+.stat-num{font:800 clamp(64px,10vw,120px)/.9 "Barlow Condensed",sans-serif;color:var(--brand);letter-spacing:-.02em}
+.passes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.pass{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 18px;border-left:6px dashed var(--line)}
+.pass .pl{color:var(--muted)}
+.pass small{display:block;color:var(--muted);font-size:13px;margin-top:8px}
+.pass b{font:800 22px/1.1 "Barlow Condensed",sans-serif}
+.pass.now{background:#0B0B0B;color:#fff;border-color:#0B0B0B;border-left-color:#8AFF33}
+.pass.now .pl,.pass.now small{color:#8AFF33}
+.gc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.gcard{margin:0;background:#0B0B0B;color:#fff;border-radius:18px;padding:18px}
+.gcard .gav{width:52px;height:52px;border-radius:50%;background:#8AFF33;color:#0B0B0B;display:grid;place-items:center;font:800 20px "Barlow Condensed",sans-serif;margin-bottom:10px}
+.gcard b{display:block;font:800 21px "Barlow Condensed",sans-serif}
+.gcard small{color:#8AFF33;font-size:13px;display:block}
+.gcard p{color:#D5D7D0;font-size:15px;margin:8px 0 0}
+.tag.new{background:var(--coral);color:#fff}
+.drill-opts.areas{grid-template-columns:repeat(2,1fr)}
+@media (min-width:1600px){.gc{grid-template-columns:repeat(5,1fr)}.passes{grid-template-columns:repeat(7,1fr)}.rank-cards{grid-template-columns:repeat(3,1fr)}}
+.foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  nav.side{position:sticky;top:0;height:auto;gap:10px;padding:12px 14px;padding-top:calc(12px + env(safe-area-inset-top,0px));z-index:20}
+  .path{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:4px}
+  .path .sep{display:none}
+  .path a{white-space:nowrap;padding:7px 10px;font-size:14px}
+  .side-progress{display:none}
+  .hero,.cp-grid,.map-wrap{grid-template-columns:1fr}
+  .hero-art{max-width:300px;justify-self:center}
+  .banner{grid-template-columns:1fr}
+  .banner .art{display:none}
+  .big-stat,.result{grid-template-columns:1fr}
+}
+/* Pantallas grandes (1920×1080) */
+@media (min-width:1600px){
+  body{font-size:17px}
+  .app{grid-template-columns:300px 1fr}
+  nav.side{padding:28px 20px}
+  .path a{font-size:15.5px;padding:9px 12px}
+  main{max-width:none;padding-left:64px;padding-right:64px}
+  .banner,.hero{margin-left:-64px;margin-right:-64px;padding-left:64px;padding-right:64px}
+  .hero{padding-top:56px;padding-bottom:52px}
+  .hero h1{font-size:96px}
+  .hero-art{max-width:520px}
+  .banner .art{width:180px;height:180px}
+  .lead,.banner p{font-size:19px}
+  .facts{grid-template-columns:repeat(4,1fr)}
+  .modules{grid-template-columns:repeat(4,1fr)}
+  .pillars{grid-template-columns:repeat(4,1fr)}
+  .fichas{grid-template-columns:repeat(5,1fr)}
+  .motives{grid-template-columns:repeat(3,1fr)}
+  .quotes{grid-template-columns:repeat(3,1fr)}
+  .avail{grid-template-columns:repeat(3,1fr)}
+  .logo-wall{grid-template-columns:repeat(8,1fr)}
+  .map-wrap{grid-template-columns:1.6fr .5fr}
+  .city-list{max-height:640px}
+  .practice-cards{grid-template-columns:repeat(3,1fr)}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="side" aria-label="Módulos">
+    <div class="logo"><div class="logo-mark" aria-hidden="true">U</div><div><b>Unisport</b><span>Entorno de formación</span></div></div>
+    <div class="gsearch" role="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+      <input id="gq" type="search" placeholder="Buscar en el entorno…" aria-label="Buscar en todo el entorno" autocomplete="off" aria-controls="gresults">
+      <kbd>/</kbd>
+    </div>
+    <ul class="path" id="path"></ul>
+    <div class="side-progress">
+      <div>Tus puntos</div>
+      <div class="side-points" id="sidePoints">0</div>
+      <div id="progressText" style="margin-top:10px">0 módulos completados</div>
+      <div class="bar"><i id="progressBar"></i></div>
+      <button class="theme-btn" id="themeBtn" type="button">Cambiar tema</button>
+    </div>
+  </nav>
+
+  <div class="gpanel" id="gpanel" hidden><div class="ghead"><span id="gcount"></span><button type="button" class="gclose" id="gclose" aria-label="Cerrar búsqueda">✕</button></div><div id="gresults" role="listbox"></div></div>
+  <main id="main">
+
+    <div class="view" id="v-inicio">
+      <div class="hero">
+        <div>
+          <div class="kick">Formación interna para asesores · Unisport</div>
+          <h1>La escuela de negocios del deporte. <span class="q">Change the game!</span></h1>
+          <p>Unisport forma a quienes quieren liderar el sector deportivo y hacerlo más accesible, profesional, inclusivo e igualitario. Aquí aprendes a presentar la escuela, su catálogo y sus titulaciones, y a resolver las dudas de cada alumno.</p>
+          <a class="cta" href="#marca">Empezar el itinerario</a>
+        </div>
+        <div class="hero-art" id="heroArt"></div>
+      </div>
+      <div class="facts" id="homeFacts"></div>
+      <section>
+        <h2>Tu itinerario</h2>
+        <p class="lead">Cada módulo se marca al visitarlo; los de práctica, al superarlos. Todo suma puntos.</p>
+        <div class="modules" id="modGrid"></div>
+      </section>
+    </div>
+
+    <div class="view" id="v-marca">
+      <div class="banner" data-b="marca"></div>
+      <div class="callout"><p style="font-size:21px;margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600">Somos la escuela de los que quieren cambiar las reglas del juego. La primera escuela de negocios del deporte, con más de 25 años formando a los directivos que toman las decisiones en el sector.</p></div>
+      <section>
+        <h3>Los cuatro pilares de la marca</h3>
+        <div class="pillars" id="brandPillars"></div>
+      </section>
+      <section>
+        <h3>Rankings que puedes citar</h3>
+        <div class="rank-cards" id="rankCards"></div>
+        <div class="tip" data-tip>Los rankings son el argumento más potente con quien compara escuelas. Cítalos con su año y su fuente: PortalMBA (2024, 2025 y 2026) y SportBusiness Postgraduate Ranking 2023.</div>
+      </section>
+      <section>
+        <h3>Una marca con proyección internacional</h3>
+        <p>Más de 15.000 alumnos de más de 30 países han elegido Unisport. La web está disponible también en inglés y portugués (unisporteducation.com) y la escuela es empresa certificada B Corp.</p>
+        <p>Con <b>Unisport Talks</b>, de la mano de Almudena Cid, la escuela da voz a deportistas y profesionales que han contribuido a mejorar el deporte.</p>
+        <div class="chips"><span class="chip">B Corp</span><span class="chip">Unisport Talks</span><span class="chip">#GameChangers</span><span class="chip">Español · English · Português</span></div>
+      </section>
+      <div class="row"><a class="cta" href="#metodo">Siguiente: la metodología</a></div>
+    </div>
+
+    <div class="view" id="v-metodo">
+      <div class="banner" data-b="metodo"></div>
+      <div class="big-stat"><div class="stat-num">24/7</div><p>El alumno es el eje del proceso: adapta el ritmo de estudio a su disponibilidad, con un campus virtual abierto las 24 horas, todos los días del año, y seguimiento personalizado.</p></div>
+      <section>
+        <h3>El método Unisport en ocho puntos</h3>
+        <div class="pillars" id="pillarsMetodo"></div>
+      </section>
+      <section>
+        <h3>Cómo se estudia un máster, paso a paso</h3>
+        <p>Ejemplo tomado del Máster en Gestión Deportiva (MBA Sports Management).</p>
+        <div class="steps">
+          <div class="stepc"><div class="num">1</div><b>Empieza cuando quiera</b><p>Formato asincrónico: tras la admisión y la matrícula, sin esperar a una convocatoria fija.</p></div>
+          <div class="stepc" style="--sc:var(--c-cursos)"><div class="num">2</div><b>Módulos progresivos</b><p>Se abren al completar los anteriores. Cada tema tiene contenido interactivo y vídeo resumen.</p></div>
+          <div class="stepc" style="--sc:var(--c-espec)"><div class="num">3</div><b>Clase en directo por tema</b><p>Con expertos, basada en casos prácticos, y disponible en diferido.</p></div>
+          <div class="stepc" style="--sc:var(--coral)"><div class="num">4</div><b>Evaluación continua</b><p>Actividad práctica con feedback, test de autoevaluación repetible y examen final tipo test por módulo.</p></div>
+          <div class="stepc" style="--sc:var(--ink)"><div class="num">5</div><b>Trabajo Fin de Máster</b><p>Escrito y con defensa oral en vídeo, a elegir entre tres líneas temáticas.</p></div>
+        </div>
+      </section>
+      <div class="tip" data-tip>Para quien trabaja o compite, el argumento clave es la flexibilidad: empieza cuando quiera, estudia a su ritmo y puede ver las clases en diferido.</div>
+      <div class="row"><a class="cta" href="#empleo">Siguiente: empleabilidad</a></div>
+    </div>
+
+    <div class="view" id="v-empleo">
+      <div class="banner" data-b="empleo"></div>
+      <h3>Un sector que crece</h3>
+      <p>Datos que la propia web usa para explicar por qué especializarse en gestión deportiva:</p>
+      <div class="facts" id="sectorFacts"></div>
+      <section>
+        <h3>Plan de empleabilidad</h3>
+        <div class="pillars" id="pillarsEmpleo"></div>
+      </section>
+      <section>
+        <h3>Organizaciones donde trabajan alumnos y con las que colabora Unisport</h3>
+        <div class="logo-wall" id="partnerWall"></div>
+        <div class="tip" data-tip>Elige la organización que conecte con el interés del alumno: LaLiga o la Real Sociedad para fútbol, la Federación Española de Rugby, la Federació Catalana de Basquetbol o Panenka para comunicación.</div>
+      </section>
+      <div class="row"><a class="cta" href="#catalogo">Siguiente: el catálogo</a></div>
+    </div>
+
+    <div class="view" id="v-catalogo">
+      <div class="banner" data-b="catalogo"></div>
+      <div class="lines" id="lines"></div>
+      <div class="chartbox"><h4 id="chartTitle">Formaciones por área</h4><div id="famChart"></div></div>
+      <div class="search">
+        <input id="q" type="search" placeholder="Busca una formación: marketing, coaching, eSports…" aria-label="Buscar formación">
+        <label id="certWrap" style="display:none"><input type="checkbox" id="certOnly"> Solo novedades</label>
+      </div>
+      <p class="line-desc" id="lineDesc"></p>
+      <div class="groups" id="groups"></div>
+      <div class="callout sun" style="margin-top:28px">
+        <h3>Especialización FutureSports: IA y Creación de Negocios</h3>
+        <p>14 semanas. Se suma a cualquier curso o máster para crear, innovar y liderar proyectos en un sector en plena revolución tecnológica. La web anuncia la próxima convocatoria para septiembre de 2026: confirma la siguiente fecha. Campaña activa: al matricularse, curso de IA Generativa gratis.</p>
+      </div>
+    </div>
+
+    <div class="view" id="v-fichas">
+      <div class="banner" data-b="fichas"></div>
+      <p class="lead" style="margin-top:0">Elige una formación para abrir su ficha comercial: a quién va dirigida, qué consigue el alumno, cómo presentarla y a qué alternativa derivar.</p>
+      <div class="fichas" id="fichaGrid"></div>
+      <div id="fichaDetail"></div>
+    </div>
+
+    <div class="view" id="v-titulacion">
+      <div class="banner" data-b="titulacion"></div>
+      <div class="cp-grid">
+        <div>
+          <h3>Qué título obtiene el alumno</h3>
+          <p>Al terminar un máster, el alumno recibe el <b>título propio de Unisport</b>: un diploma privado que certifica una formación especializada, práctica y orientada al entorno profesional del deporte.</p>
+          <p>Además, según la formación y cumpliendo las condiciones, puede sumar <b>acreditaciones universitarias</b> y reconocimientos internacionales. Es uno de los puntos donde más precisión hace falta en la llamada.</p>
+        </div>
+        <div id="cpArt"></div>
+      </div>
+      <section>
+        <h3>Las opciones de acreditación</h3>
+        <div class="pillars" id="accPillars"></div>
+      </section>
+      <section>
+        <h3>¿Es oficial? La respuesta depende de la opción</h3>
+        <div class="scroll"><table class="htable">
+          <thead><tr><th>Opción</th><th>¿Oficial?</th><th>Qué decir</th></tr></thead>
+          <tbody>
+            <tr><td><b>Título propio de Unisport</b></td><td><span class="no">✕ Diploma privado</span></td><td>Certifica la formación especializada; es el título que se obtiene siempre al terminar.</td></tr>
+            <tr><td><b>Acreditación universitaria UDIMA</b></td><td><span class="yes">✓ Acreditación universitaria</span></td><td>Opcional y voluntaria, con valor académico adicional. Exige titulación universitaria previa relacionada, documentación en el primer mes y tasas.</td></tr>
+            <tr><td><b>University of Chichester</b></td><td><span class="yes">✓ Título oficial del Reino Unido</span></td><td>Si el máster se cursa en inglés. La universidad valida contenidos y modelo y expide el título; Unisport es centro colaborador autorizado.</td></tr>
+            <tr><td><b>RVOE de la SEP de México</b></td><td><span class="yes">✓ Validez oficial en México</span></td><td>Reconocimiento de Validez Oficial de Estudios que facilita el reconocimiento en Latinoamérica. Confirma qué formaciones lo tienen; el MBA sí.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+      <section>
+        <h3>Cómo explicarlo sin equivocarte</h3>
+        <div class="do-dont">
+          <div class="dd do"><h4>Sí</h4><ul><li>«Al terminar obtienes el título propio de Unisport y, si cumples las condiciones, puedes solicitar la acreditación universitaria de UDIMA.»</li><li>«Si lo cursas en inglés, el título lo expide la University of Chichester y es oficial en el Reino Unido.»</li><li>«Tiene 60 ECTS y 1.500 horas.»</li><li>Remitir siempre a las condiciones vigentes de cada acreditación.</li></ul></div>
+          <div class="dd dont"><h4>No</h4><ul><li>«Es un máster oficial» o «un máster universitario oficial» sin matizar la opción.</li><li>Prometer la acreditación UDIMA a quien no tiene titulación universitaria previa relacionada.</li><li>Decir que todas las formaciones tienen RVOE o Chichester sin confirmarlo.</li><li>Presentar la acreditación como automática: se solicita y tiene requisitos y tasas.</li></ul></div>
+        </div>
+      </section>
+      <div class="row"><a class="cta" href="#profia">Siguiente: ProfIA</a></div>
+    </div>
+
+    <div class="view" id="v-profia">
+      <div class="banner" data-b="profia"></div>
+      <div class="profia-grid">
+        <div>
+          <h3>Un profesor con IA, disponible siempre</h3>
+          <p>ProfIA es el asistente de estudio con inteligencia artificial del Grupo Northius, una herramienta transversal a todas sus marcas. Va integrado en el temario: cuando el alumno tiene una duda, no espera a la próxima clase ni a una respuesta por mensajería, sino que pregunta y obtiene la respuesta al momento, basada en el material de su curso.</p>
+          <p>Se usa sin límites. El alumno puede abrir el tema en PDF de forma tradicional o pulsar <b>Abrir con ProfIA</b> para estudiar con el asistente al lado.</p>
+          <div class="tip warn"><span class="ic" data-ic="alert"></span><p><b>Importante:</b> ProfIA no sustituye el contenido ni la metodología del curso, que se mantienen igual. Es un complemento al estudio.</p></div>
+        </div>
+        <div id="profiaMock"></div>
+      </div>
+      <section>
+        <h3>Qué puede hacer por el alumno</h3>
+        <div class="pillars" id="profiaFeat"></div>
+      </section>
+      <section>
+        <h3>Cómo ha evolucionado</h3>
+        <p>El despliegue empezó en otras marcas del grupo y se ha ido ampliando curso a curso con nuevas funciones.</p>
+        <div class="timeline">
+          <div><b>Septiembre 2025</b>Primeros cursos con ProfIA.</div>
+          <div><b>Octubre 2025</b>Botón de resumen automático del tema y respuestas más rápidas.</div>
+          <div><b>Diciembre 2025</b>Llega el podcast del tema, de 4 a 6 partes de 10 a 20 minutos.</div>
+          <div><b>Enero 2026</b>Despliegue progresivo curso a curso. El podcast queda en piloto en algunas formaciones.</div>
+          <div><b>Marzo 2026</b>Nueva función de flashcards, basada en el recuerdo activo y la repetición espaciada.</div>
+          <div><b>Junio 2026</b>Sigue la ampliación a nuevas formaciones.</div>
+        </div>
+        <div class="tip warn"><span class="ic" data-ic="alert"></span><p><b>Antes de mencionarlo:</b> confirma que la formación de Unisport que ofreces tiene ProfIA activado y si incluye podcast. El despliegue es progresivo.</p></div>
+      </section>
+      <section>
+        <h3>Cómo presentarlo en la llamada</h3>
+        <div class="do-dont">
+          <div class="dd do"><h4>Sí</h4><ul><li>«Tendrás un profesor con IA dentro del temario que te resuelve dudas al momento, a cualquier hora.»</li><li>«Te hace resúmenes, te pone ejemplos y te prepara preguntas de repaso y flashcards.»</li><li>«Es un apoyo extra: el temario, las clases en directo y tu tutor siguen ahí.»</li></ul></div>
+          <div class="dd dont"><h4>No</h4><ul><li>Decir que sustituye al profesor, al tutor o al temario.</li><li>Prometerlo en una formación sin haber confirmado que lo tiene activado.</li><li>Prometer el podcast en cualquier formación: está en piloto en unas pocas.</li></ul></div>
+        </div>
+      </section>
+      <div class="row"><a class="cta" href="#stage">Siguiente: Stage Internacional</a></div>
+    </div>
+
+    <div class="view" id="v-stage">
+      <div class="banner" data-b="stage"></div>
+      <p class="lead" style="margin-top:0">Una estancia técnica anual para conocer por dentro la gestión, el funcionamiento y el desarrollo de empresas y entidades deportivas de distintas partes del mundo, con compañeros de varias nacionalidades.</p>
+      <section>
+        <h3>Destinos del Stage</h3>
+        <div class="passes" id="passes"></div>
+      </section>
+      <section>
+        <h3>Por qué es un argumento diferencial</h3>
+        <div class="pillars" id="stagePillars"></div>
+      </section>
+      <div class="tip" data-tip>El Stage convierte «online» en «experiencia»: menciónalo a quien teme estudiar solo o busca contactos en el sector. Confirma siempre fechas y condiciones de participación de la edición en curso.</div>
+      <div class="row"><a class="cta" href="#argumentario">Siguiente: cómo orientar</a></div>
+    </div>
+
+    <div class="view" id="v-argumentario">
+      <div class="banner" data-b="argumentario"></div>
+      <div class="motives" id="motives"></div>
+      <div class="callout sun"><h3>Venta cruzada en cualquier caso</h3><p>La especialización FutureSports: IA y Creación de Negocios se suma a cualquier curso o máster. El mensaje de la web: formarte impulsa tu carrera; emprender, la transforma.</p></div>
+      <div class="row"><a class="cta" href="#objeciones">Siguiente: tratamiento de objeciones</a></div>
+    </div>
+
+    <div class="view" id="v-objeciones">
+      <div class="banner" data-b="objeciones"></div>
+      <h3>Las objeciones más frecuentes</h3>
+      <div class="groups" id="objList"></div>
+      <section>
+        <h3>Entrénalas</h3>
+        <p>El alumno te plantea una objeción y eliges la mejor respuesta. Hay respuestas correctas, flojas y otras que prometen lo que no se puede prometer. Necesitas un 75% para completar el módulo.</p>
+        <div class="row"><button class="btn" type="button" id="startObj">Empezar el entrenamiento</button></div>
+        <div id="objArea"></div>
+      </section>
+    </div>
+
+    <div class="view" id="v-opiniones">
+      <div class="banner" data-b="opiniones"></div>
+      <section style="margin-top:0">
+        <h3>#GameChangers: deportistas que han estudiado en Unisport</h3>
+        <div class="gc" id="gameChangers"></div>
+      </section>
+      <section>
+        <h3>Opiniones de alumnos</h3>
+        <div class="quotes" id="quotes"></div>
+      </section>
+      <div class="tip" data-tip>Con un deportista al teléfono, las historias #GameChangers son tu mejor carta: deportistas de élite que se preparan para el día después.</div>
+      <div class="row"><a class="cta" href="#practica">Siguiente: ponte a prueba</a></div>
+    </div>
+
+    <div class="view" id="v-practica">
+      <div class="banner" data-b="practica"></div>
+      <div class="practice-cards">
+        <button class="pcard" type="button" id="startQuiz" style="--pc:var(--brand)"><b>Test de la marca</b><span>10 preguntas sobre datos clave, rankings, metodología y titulaciones. Necesitas un 80%.</span><span class="score" id="sQuiz"></span></button>
+        <button class="pcard" type="button" id="startDrill" style="--pc:var(--c-espec)"><b>Clasificador del catálogo</b><span>10 formaciones al azar: ¿a qué área pertenece cada una?</span><span class="score" id="sDrill"></span></button>
+        <a class="pcard" href="#objeciones" style="--pc:var(--c-cursos);text-decoration:none"><b>Objeciones</b><span>Entrena respuestas a las dudas más habituales.</span><span class="score" id="sObj"></span></a>
+      </div>
+      <div id="practiceArea"></div>
+    </div>
+
+    <div class="view" id="v-ranking">
+      <div class="banner" data-b="ranking"></div>
+      <div class="points-explain">
+        <div><b>Test</b>Tu mejor % (máx. 100)</div>
+        <div><b>Clasificador</b>Aciertos × 10 (máx. 100)</div>
+        <div><b>Objeciones</b>Tu mejor % (máx. 100)</div>
+        <div><b>Módulos</b>10 por módulo completado</div>
+      </div>
+      <div id="rankArea"><p class="empty">Cargando el ranking…</p></div>
+    </div>
+
+    <p class="foot">Contenido basado en unisport.es (consultado en octubre de 2026). Uso interno de formación del Grupo Northius. Ante cualquier duda sobre precios, becas, convocatorias, acreditaciones o condiciones, prevalece la información oficial vigente.</p>
+  </main>
+</div>
+
+<script>
+/* ---------- Iconos ---------- */
+const I={
+ book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/>',
+ cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/>',
+ doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8.5 15l2.5 2.5 4.5-5"/>',
+ shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/>',
+ plane:'<path d="M2 16l20-8-8 14-2-6z"/><path d="M12 16l10-8"/>',
+ chart:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/>',
+ apple:'<path d="M12 7c-2-2-7-1.5-7 4.5 0 4 3 9 5.5 9 1 0 1.2-.5 1.5-.5s.5.5 1.5.5C16 20.5 19 15.5 19 11.5 19 5.5 14 5 12 7z"/><path d="M12 7c0-2 1-3.5 3-4"/>',
+ chip:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+ scale:'<path d="M12 3v18M5 21h14M6 7h12"/><path d="M6 7l-3 7a3 3 0 0 0 6 0zM18 7l-3 7a3 3 0 0 0 6 0z"/>',
+ game:'<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M15 12h.01M18 13h.01"/>',
+ ball:'<circle cx="12" cy="12" r="10"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/><path d="M12 2v5M16 10l5-1M14.5 15l3 4M9.5 15l-3 4M8 10l-5-1"/>',
+ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+ mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/>',
+ star:'<path d="M12 2l3 6.5 7 .9-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.9z"/>',
+ compass:'<circle cx="12" cy="12" r="10"/><path d="M16 8l-2 6-6 2 2-6z"/>',
+ brief:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/>',
+ grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+ cards:'<rect x="2" y="6" width="14" height="16" rx="2"/><path d="M6 2h14a2 2 0 0 1 2 2v14"/>',
+ award:'<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>',
+ pin:'<path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+ route:'<circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h7a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h7"/>',
+ chat:'<path d="M21 12a8 8 0 0 1-11.8 7L3 21l2-5.5A8 8 0 1 1 21 12z"/><path d="M8 11h8M8 14h5"/>',
+ heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>',
+ target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+ trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+ home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v11h14V10"/>',
+ clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+ users:'<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><circle cx="17" cy="9" r="3"/><path d="M17 15a5 5 0 0 1 5 5"/>',
+ bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/>',
+ link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+ eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ bulb:'<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>',
+ alert:'<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+ paw:'<circle cx="5" cy="10" r="2"/><circle cx="9" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="19" cy="10" r="2"/><path d="M12 11c-3 0-6 4.5-6 7a3 3 0 0 0 3 3c1.2 0 2-.6 3-.6s1.8.6 3 .6a3 3 0 0 0 3-3c0-2.5-3-7-6-7z"/>',
+ car:'<path d="M5 17h14v-5l-2-5H7l-2 5z"/><circle cx="7.5" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/><path d="M5 12h14"/>',
+ cross:'<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>',
+ baby:'<circle cx="12" cy="8" r="5"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M10 8h.01M14 8h.01"/>',
+ pill:'<rect x="2" y="8" width="20" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9 7l6 8"/>',
+ chef:'<path d="M6 14a4 4 0 0 1-1-7.9A5 5 0 0 1 14.6 4a4 4 0 0 1 3.4 7.9V14z"/><path d="M6 14v6h12v-6"/>',
+ calc:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/>',
+ police:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M12 7l1.3 2.7 3 .4-2.2 2 .6 3-2.7-1.5-2.7 1.5.6-3-2.2-2 3-.4z"/>',
+ scissors:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/>'
+};
+const ico=(n,s=24,sw=2)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
+/* ---------- Datos ---------- */
+const MODULES=[
+ {id:'marca',t:'La marca',d:'La primera escuela de negocios del deporte',i:'star',c:'#1B1B1B'},
+ {id:'metodo',t:'Metodología',d:'Online, flexible y con seguimiento',i:'compass',c:'#2F8F0B'},
+ {id:'empleo',t:'Empleabilidad',d:'Prácticas, ofertas y coaching para el empleo',i:'brief',c:'#1E5BD8'},
+ {id:'catalogo',t:'Catálogo',d:'Másteres, cursos y especialización',i:'grid',c:'#7A3FE0'},
+ {id:'fichas',t:'Fichas destacadas',d:'Cómo presentar las formaciones clave',i:'cards',c:'#E0461F'},
+ {id:'titulacion',t:'Titulación y acreditaciones',d:'Título propio, UDIMA, Chichester y RVOE',i:'award',c:'#B7790A'},
+ {id:'profia',t:'ProfIA',d:'El profesor con IA del Grupo Northius',i:'spark',c:'#5B3AA8'},
+ {id:'stage',t:'Stage Internacional',d:'La experiencia presencial en el extranjero',i:'plane',c:'#0E8F79'},
+ {id:'argumentario',t:'Cómo orientar',d:'Qué ofrecer según el perfil',i:'route',c:'#1E5BD8'},
+ {id:'objeciones',t:'Objeciones',d:'Respuestas a las dudas habituales',i:'chat',c:'#7A3FE0'},
+ {id:'opiniones',t:'Opiniones',d:'#GameChangers y alumnos',i:'heart',c:'#E0461F'},
+ {id:'practica',t:'Ponte a prueba',d:'Test, clasificador y objeciones',i:'target',c:'#2F8F0B'}
+];
+const BANNERS={
+ marca:['','La escuela de negocios del deporte','Más de 25 años formando a los directivos del sector deportivo. Una marca del Grupo Northius con vocación internacional.'],
+ metodo:['','Sólida, innovadora y flexible','El alumno es el eje: estudia online a su ritmo, con tutor individual, clases en directo con profesionales en activo y seguimiento personalizado.'],
+ empleo:['','Empleabilidad en el sector deportivo','Un plan para sacar partido al perfil de cada alumno: prácticas, ofertas de empleo del sector, coaching y apoyo al emprendimiento.'],
+ catalogo:['','La oferta formativa','Diez másteres, seis cursos de experto y una especialización, organizados por áreas. Cada formación enlaza a su ficha en unisport.es.'],
+ fichas:['','Fichas de formaciones destacadas','Los másteres que la web pone en portada y otras formaciones clave, preparadas para la llamada.'],
+ titulacion:['','Titulación y acreditaciones','Qué título obtiene el alumno y qué acreditaciones puede sumar. Un argumento potente que hay que explicar con precisión.'],
+ profia:['','ProfIA: tu asistente de estudio','Un profesor con inteligencia artificial dentro del temario, común a todas las marcas del Grupo Northius.'],
+ stage:['','Stage Internacional','Formación online con lo mejor de la presencialidad: una estancia técnica anual en un destino diferente.'],
+ argumentario:['','Cómo orientar según el perfil','Deportistas, apasionados del deporte, profesionales que se especializan o quien quiere algo más corto: qué ofrecer a cada uno.'],
+ objeciones:['','Tratamiento de objeciones','Las dudas más habituales, cómo responderlas con datos reales y qué no prometer nunca.'],
+ opiniones:['','Lo que dicen los alumnos','Deportistas de élite y alumnos que cuentan su experiencia en la web de Unisport.'],
+ practica:['','Ponte a prueba','Tres ejercicios para fijar lo aprendido. Cada resultado suma puntos.'],
+ ranking:['Equipo','Ranking de asesores','Los puntos se calculan con tus mejores resultados y los módulos completados. Se actualiza en directo.']
+};
+const B='https://unisport.es/';
+const CERT=new Set();
+const NUEVO=new Set(['Máster en Coaching Deportivo y Psicología de Alto Rendimiento','Máster en Dirección de Entidades Deportivas','FutureSports: IA y Creación de Negocios']);
+const URLS={
+ 'Máster en Gestión Deportiva (MBA Sports Management)':'mba-sports-management/',
+ 'Máster en Dirección de Entidades Deportivas':'master-en-direccion-de-entidades-deportivas/',
+ 'Máster en Dirección y Organización de Eventos Deportivos':'master-en-organizacion-de-eventos-deportivos/',
+ 'Máster en Coaching Deportivo y Psicología de Alto Rendimiento':'master-en-coaching-directivo-deportivo-y-psicologia-del-alto-rendimiento/',
+ 'Máster en Alto Rendimiento Deportivo Online':'master-alto-rendimiento-deportivo/',
+ 'Máster en Periodismo y Comunicación Deportiva':'master-periodismo-comunicacion-deportiva/',
+ 'Máster en Marketing y Patrocinio Deportivo':'master-marketing-patrocinio-deportivo/',
+ 'Máster en Derecho Deportivo Internacional':'master-derecho-deportivo/',
+ 'Máster en Big Data e Inteligencia Artificial en el Deporte':'master-big-data-ia-deporte/',
+ 'Máster en Nutrición Deportiva':'master-en-nutricion-deportiva/',
+ 'Curso de Gestión de eSports':'curso-experto-gestion-esports/',
+ 'Curso de Dirección de Entidades Deportivas':'curso-experto-en-direccion-de-entidades-deportivas/',
+ 'Curso de Organización de Eventos Deportivos':'curso-experto-en-gestion-de-eventos-deportivos/',
+ 'Curso de Periodismo Deportivo':'experto-comunicacion-deportiva/',
+ 'Curso de Sport Social Media Management':'curso-experto-en-sport-social-media-management/',
+ 'Curso de Coaching Deportivo':'curso-de-experto-en-coaching-deportivo-y-psicologia-del-alto-rendimiento/',
+ 'FutureSports: IA y Creación de Negocios':'futuresports-ia-creacion-negocios/'
+};
+const g=(name,path,items)=>({name,path,items});
+const CAT={
+ masters:{name:'Másteres',color:'var(--c-masters)',desc:'Másteres online de 1.500 horas y 60 ECTS para liderar el futuro del deporte en gestión, comunicación, coaching, marketing y otras disciplinas.',all:'masters/',groups:[
+  g('Gestión deportiva','gestion-deportiva/',['Máster en Gestión Deportiva (MBA Sports Management)','Máster en Dirección de Entidades Deportivas','Máster en Dirección y Organización de Eventos Deportivos']),
+  g('Coaching y rendimiento','coaching-deportivo-directivo/',['Máster en Coaching Deportivo y Psicología de Alto Rendimiento','Máster en Alto Rendimiento Deportivo Online']),
+  g('Comunicación deportiva','comunicacion-deportiva/',['Máster en Periodismo y Comunicación Deportiva']),
+  g('Marketing deportivo','marketing-deportivo/',['Máster en Marketing y Patrocinio Deportivo']),
+  g('Derecho deportivo','master-derecho-deportivo/',['Máster en Derecho Deportivo Internacional']),
+  g('Big Data e IA','master-big-data-ia-deporte/',['Máster en Big Data e Inteligencia Artificial en el Deporte']),
+  g('Nutrición deportiva','master-en-nutricion-deportiva/',['Máster en Nutrición Deportiva'])
+ ]},
+ cursos:{name:'Cursos de experto',color:'var(--c-cursos)',desc:'Cursos online más cortos para especializarse en un área concreta del sector deportivo o dar un primer paso antes de un máster.',all:'cursos/',groups:[
+  g('Gestión deportiva','gestion-deportiva/',['Curso de Gestión de eSports','Curso de Dirección de Entidades Deportivas','Curso de Organización de Eventos Deportivos']),
+  g('Comunicación deportiva','comunicacion-deportiva/',['Curso de Periodismo Deportivo','Curso de Sport Social Media Management']),
+  g('Coaching y rendimiento','coaching-deportivo-directivo/',['Curso de Coaching Deportivo'])
+ ]},
+ espec:{name:'Especialización',color:'var(--c-espec)',desc:'Una especialización de 14 semanas que se suma a cualquier curso o máster.',all:'futuresports-ia-creacion-negocios/',groups:[
+  g('Emprendimiento e IA','futuresports-ia-creacion-negocios/',['FutureSports: IA y Creación de Negocios'])
+ ]}
+};
+const LINEMETA={masters:{i:'cap',t:'var(--t-masters)'},cursos:{i:'book',t:'var(--t-cursos)'},espec:{i:'spark',t:'var(--t-espec)'}};
+
+const FICHAS=[
+ {id:'mba',line:'masters',fam:'Gestión deportiva',path:'mba-sports-management/',name:'Máster en Gestión Deportiva (MBA Sports Management)',i:'trophy',tipo:'Máster · 1.500 h · 60 ECTS',perfil:'Apasionados del deporte con o sin vinculación al sector, deportistas que quieren reorientar su carrera, organizadores de eventos, profesionales del marketing y directivos que quieren emprender en el deporte.',logra:['Título propio de Unisport y opción de acreditación universitaria UDIMA (consulta condiciones)','RVOE de la SEP de México; en inglés, título oficial de la University of Chichester','Prácticas opcionales en entidades deportivas y Stage Internacional'],say:'«Es el mejor MBA especializado de España según PortalMBA tres años seguidos y el mejor máster online de gestión deportiva de Europa según SportBusiness.»',preg:'¿Ya trabajas en el sector deportivo o quieres entrar desde otro ámbito?',ruta:'Más corto: Curso de Dirección de Entidades Deportivas o de Organización de Eventos. Más especializado: Máster en Dirección de Entidades Deportivas o en Eventos.',emp:'Dirección general de empresas deportivas, marketing y comunicación, finanzas, dirección de instalaciones y actividades deportivas'},
+ {id:'coach',line:'masters',fam:'Coaching y rendimiento',path:'master-en-coaching-directivo-deportivo-y-psicologia-del-alto-rendimiento/',name:'Máster en Coaching Deportivo y Psicología de Alto Rendimiento',i:'target',tipo:'Máster · 1.500 h · 60 ECTS · Nuevo',perfil:'Entrenadores, deportistas y profesionales que quieren acompañar a personas y equipos hacia el alto rendimiento.',logra:['Formación online con tutor y clases en directo','Título propio de Unisport y acreditaciones según condiciones','Comunidad de alumnos y docentes del sector'],say:'«Alumnos de este máster destacan a sus tutores y la mezcla de teoría y casos reales; muchos lo cursan desde Latinoamérica.»',preg:'¿Trabajas ya con deportistas o equipos, o quieres empezar a hacerlo?',ruta:'Más corto: Curso de Coaching Deportivo. Si su foco es la preparación física y el rendimiento: Máster en Alto Rendimiento Deportivo Online.',emp:'Coaching deportivo y ejecutivo para deportistas, equipos, clubes y federaciones'},
+ {id:'perio',line:'masters',fam:'Comunicación deportiva',path:'master-periodismo-comunicacion-deportiva/',name:'Máster en Periodismo y Comunicación Deportiva',i:'mic',tipo:'Máster · 1.500 h · 60 ECTS',perfil:'Periodistas, comunicadores y creadores de contenido que quieren especializarse en deporte.',logra:['Formación con profesionales en activo','Título propio de Unisport y acreditaciones según condiciones','Plan de empleabilidad y bolsa de ofertas del sector'],say:'«Aprendes con profesionales que hoy trabajan en comunicación deportiva, con clases en directo que puedes ver en diferido.»',preg:'¿Te interesa más el periodismo o la comunicación de clubes y marcas?',ruta:'Más corto: Curso de Periodismo Deportivo o Curso de Sport Social Media Management. Si le atrae la parte comercial: Máster en Marketing y Patrocinio.',emp:'Medios deportivos, comunicación de clubes, federaciones y marcas, social media'},
+ {id:'mkt',line:'masters',fam:'Marketing deportivo',path:'master-marketing-patrocinio-deportivo/',name:'Máster en Marketing y Patrocinio Deportivo',i:'chart',tipo:'Máster · 1.500 h · 60 ECTS',perfil:'Profesionales o aficionados del marketing que quieren centrar su carrera en el deporte.',logra:['Especialización en marketing, patrocinio y activación de marcas','Título propio de Unisport y acreditaciones según condiciones','Prácticas opcionales y ofertas del sector'],say:'«El patrocinio y la marca son lo que atrae inversión al deporte: aquí aprendes a gestionarlos.»',preg:'¿Vienes del marketing o te estás iniciando?',ruta:'Más corto: Curso de Sport Social Media Management. Más amplio: MBA Sports Management.',emp:'Marketing de clubes y competiciones, patrocinio, agencias y marcas deportivas'},
+ {id:'nutri',line:'masters',fam:'Nutrición deportiva',path:'master-en-nutricion-deportiva/',name:'Máster en Nutrición Deportiva',i:'apple',tipo:'Máster · 1.500 h · 60 ECTS',perfil:'Profesionales de la nutrición, la salud y el deporte que quieren especializarse en el rendimiento deportivo.',logra:['Especialización en nutrición aplicada al deporte','Título propio de Unisport y acreditaciones según condiciones','Clases en directo con profesionales en activo'],say:'«La nutrición ya es una pieza clave del rendimiento, tanto en deportistas profesionales como amateur.»',preg:'¿Qué formación previa tienes en nutrición o en ciencias de la salud?',ruta:'Si su interés es el rendimiento físico: Máster en Alto Rendimiento Deportivo Online.',emp:'Asesoramiento nutricional en el ámbito deportivo, de acuerdo con la titulación de origen del alumno'},
+ {id:'bigdata',line:'masters',fam:'Big Data e IA',path:'master-big-data-ia-deporte/',name:'Máster en Big Data e Inteligencia Artificial en el Deporte',i:'chip',tipo:'Máster · 1.500 h · 60 ECTS',perfil:'Perfiles analíticos, técnicos o deportivos que quieren aplicar datos e IA al rendimiento, al negocio o a la experiencia del aficionado.',logra:['Visión aplicada del dato y la IA en el deporte','Título propio de Unisport y acreditaciones según condiciones','Plan de empleabilidad'],say:'«Los datos ya deciden fichajes, entrenamientos y patrocinios. Este máster te pone en ese lado de la mesa.»',preg:'¿Tienes experiencia con datos o vienes del ámbito deportivo?',ruta:'Complemento natural: especialización FutureSports: IA y Creación de Negocios.',emp:'Análisis de datos y rendimiento en clubes, competiciones, medios y empresas tecnológicas del deporte'},
+ {id:'derecho',line:'masters',fam:'Derecho deportivo',path:'master-derecho-deportivo/',name:'Máster en Derecho Deportivo Internacional',i:'scale',tipo:'Máster · 1.500 h · 60 ECTS',perfil:'Profesionales del derecho y perfiles jurídicos que quieren especializarse en el sector deportivo.',logra:['Especialización jurídica en el ámbito deportivo internacional','Título propio de Unisport y acreditaciones según condiciones','Docentes del sector'],say:'«El deporte vive de contratos, normativa y compliance: es un nicho jurídico con mucho recorrido.»',preg:'¿Tienes formación en Derecho o experiencia jurídica?',ruta:'Si busca una visión de gestión más amplia: MBA Sports Management, que incluye un módulo de derecho deportivo.',emp:'Asesoría jurídica de clubes, federaciones y agencias, contratación y representación deportiva'},
+ {id:'esports',line:'cursos',fam:'Gestión deportiva',path:'curso-experto-gestion-esports/',name:'Curso de Gestión de eSports',i:'game',tipo:'Curso de experto',perfil:'Personas del mundo del videojuego, la gestión o el emprendimiento que quieren profesionalizarse en los eSports.',logra:['Especialización en una industria emergente','Formación online con tutor','Plan de empleabilidad'],say:'«Los eSports ya son una industria con clubes, competiciones y patrocinadores: aquí aprendes a gestionarla.»',preg:'¿Quieres trabajar en un club, en competiciones o lanzar tu propio proyecto?',ruta:'Para dar el salto a la gestión deportiva completa: MBA Sports Management, que también trata los eSports.',emp:'Clubes y competiciones de eSports, agencias y marcas del sector'}
+];
+const OBJ=[
+ {o:'«¿Es un máster oficial?»',opts:[
+   ['Obtienes el título propio de Unisport y, si cumples las condiciones, puedes solicitar la acreditación universitaria de UDIMA. Si lo cursas en inglés, el título lo expide la University of Chichester y es oficial en el Reino Unido. Te explico qué encaja contigo.',2,'Exacto: distingues cada opción y no prometes de más.'],
+   ['Sí, todos nuestros másteres son oficiales.',0,'Falso: el título de Unisport es un diploma propio; las acreditaciones son opcionales y tienen condiciones.'],
+   ['Eso no importa, en el deporte lo que cuenta es la experiencia.',1,'Esquiva la pregunta cuando tienes buenas opciones de acreditación que explicar.']],tip:'Usa la tabla del módulo Titulación y acreditaciones.'},
+ {o:'«Es muy caro.»',opts:[
+   ['Entiendo. Unisport destina más de 500.000 € a becas y ayudas y hay facilidades de pago. ¿Lo calculamos juntos con la calculadora de becas?',2,'Bien: datos reales y un siguiente paso concreto.'],
+   ['Si te matriculas hoy te hago un descuento especial que no puedo poner por escrito.',0,'No inventes condiciones: las becas y facilidades son las oficiales.'],
+   ['Es el precio de un buen máster, no hay más.',1,'Cierra la conversación sin explorar la objeción.']],tip:'La web tiene una herramienta «Calcula tu beca».'},
+ {o:'«No tengo tiempo: trabajo y entreno.»',opts:[
+   ['Es online y asincrónico: empiezas cuando quieras, el campus está abierto 24 horas y las clases en directo se pueden ver en diferido. ¿Cómo es tu semana?',2,'Perfecto: argumentos de metodología y pregunta para personalizar.'],
+   ['Con una hora al día lo acabas seguro en tres meses.',0,'No prometas duraciones: un máster son 1.500 horas.'],
+   ['Entonces mejor espera a tener más tiempo.',1,'Pierdes al alumno sin mostrar la flexibilidad del método.']],tip:'Varios testimonios destacan poder compaginarlo con el trabajo.'},
+ {o:'«Online me desmotivo, no me fío.»',opts:[
+   ['Tendrás tutor individual, clases en directo con profesionales en activo y seguimiento personalizado. Y con el Stage Internacional vives la parte presencial.',2,'Muy bien: acompañamiento y experiencia presencial.'],
+   ['Hoy todo es online, te acostumbrarás.',1,'No responde a su miedo real.'],
+   ['Puedes hacer el máster presencial en Madrid.',0,'Falso: la formación es online; el Stage es una estancia puntual.']],tip:'Menciona también ProfIA si la formación lo tiene activado.'},
+ {o:'«¿Trabajaré en el deporte al terminar?»',opts:[
+   ['Sí, te garantizamos trabajo en un club.',0,'Nunca garantices empleo.'],
+   ['Nadie puede garantizarlo, pero tienes plan de empleabilidad: prácticas opcionales en entidades deportivas, ofertas del sector filtradas a diario, coaching para el empleo y una red de organizaciones colaboradoras.',2,'Honesto y potente.'],
+   ['Eso depende de ti.',1,'Desaprovecha los argumentos de empleabilidad.']],tip:'El sector emplea a más de 250.000 personas en España, según la web.'},
+ {o:'«No tengo carrera universitaria.»',opts:[
+   ['No pasa nada, te damos igualmente la acreditación de UDIMA.',0,'Falso: la acreditación UDIMA exige titulación universitaria previa relacionada.'],
+   ['Revisamos juntos tu perfil y los requisitos de acceso del programa. Ten en cuenta que las acreditaciones universitarias opcionales sí exigen una titulación previa relacionada.',2,'Correcto: sin cerrar la puerta y sin prometer de más.'],
+   ['Entonces no puedes estudiar con nosotros.',1,'No lo sabes sin revisar requisitos: cierras una venta posible.']],tip:'Ante dudas de acceso, consulta los requisitos vigentes del programa.'},
+ {o:'«¿Por qué Unisport y no un máster en una universidad?»',opts:[
+   ['Porque somos los únicos que hacemos másteres de deporte.',0,'Falso y fácil de desmontar.'],
+   ['Unisport es la primera escuela de negocios del deporte, con más de 25 años, rankings como PortalMBA y SportBusiness, docentes en activo del sector y opción de acreditación universitaria.',2,'Diferenciación con datos verificables.'],
+   ['Las universidades son peores.',1,'Ataca a la competencia sin aportar argumentos propios.']],tip:'Los rankings van con su año: PortalMBA 2024-2026 y SportBusiness 2023.'},
+ {o:'«Estudiar online solo es muy duro. ¿Y si me atasco?»',opts:[
+   ['Tendrás ProfIA, un profesor con IA dentro del temario que resuelve dudas al momento, además de tu tutor y las clases en directo.',2,'Perfecto: ProfIA más acompañamiento humano.'],
+   ['ProfIA te lo hace todo, no necesitas estudiar el temario.',0,'Falso: ProfIA no sustituye el temario ni la metodología.'],
+   ['Escríbele al tutor y en unos días te contesta.',1,'Desaprovechas que ProfIA responde al instante.']],tip:'Confirma antes que la formación tiene ProfIA activado.'},
+ {o:'«Me lo tengo que pensar.»',opts:[
+   ['Claro. ¿Qué te hace dudar más: el programa, el tiempo o la inversión? Así te lo resuelvo antes de que decidas.',2,'Identificas la duda real.'],
+   ['Si no te matriculas hoy pierdes la plaza para siempre.',0,'Presión falsa: el máster empieza cuando el alumno quiera.'],
+   ['Vale, ya me llamas tú.',1,'Pierdes el contacto sin saber qué le frena.']],tip:'Si hay una promoción vigente, como el curso de IA Generativa gratis al matricularse, menciónala.'}
+];
+const QUIZ=[
+ {q:'¿Cuántos años lleva Unisport formando profesionales del deporte?',o:['Más de 5','Más de 10','Más de 25','Más de 50'],a:2,e:'La web habla de más de 25 años formando a los directivos del sector.'},
+ {q:'¿Cuántos alumnos han elegido Unisport?',o:['Más de 1.500','Más de 15.000, de más de 30 países','Más de 150.000','Más de 15.000, solo de España'],a:1,e:'Más de 15.000 alumnos de más de 30 países.'},
+ {q:'¿Qué carga tienen los másteres?',o:['300 h','600 h y 30 ECTS','1.500 h y 60 ECTS','2.000 h y 90 ECTS'],a:2,e:'Los másteres son de 1.500 horas y 60 ECTS.'},
+ {q:'¿Qué ranking sitúa al MBA como mejor MBA especializado de España en 2024, 2025 y 2026?',o:['QS','PortalMBA','Financial Times','SportBusiness'],a:1,e:'PortalMBA, tres años consecutivos.'},
+ {q:'Según SportBusiness Postgraduate Ranking 2023, el máster de Unisport es…',o:['El mejor online de Europa y el segundo del mundo','El mejor de España','El quinto de Europa','El mejor presencial de Europa'],a:0,e:'Mejor programa online de Europa y segundo del mundo.'},
+ {q:'¿Qué título se obtiene siempre al terminar un máster?',o:['Un máster universitario oficial español','El título propio de Unisport','Un grado universitario','Un Certificado de Profesionalidad'],a:1,e:'Un diploma privado; las acreditaciones son opcionales.'},
+ {q:'¿Qué universidad emite la acreditación universitaria opcional?',o:['UDIMA','UNED','Complutense','Nebrija'],a:0,e:'La Universidad a Distancia de Madrid (UDIMA), con requisitos y tasas.'},
+ {q:'Si el máster se cursa en inglés, ¿quién expide el título oficial del Reino Unido?',o:['University of Oxford','University of Chichester','King’s College','UDIMA'],a:1,e:'La University of Chichester; Unisport es centro colaborador autorizado.'},
+ {q:'¿Qué aporta el RVOE de la SEP?',o:['Validez oficial en México y reconocimiento en Latinoamérica','Validez en la UE','Acceso a oposiciones','Créditos extra'],a:0,e:'Reconocimiento de Validez Oficial de Estudios de la Secretaría de Educación Pública de México.'},
+ {q:'¿Cuándo puede empezar un alumno el máster?',o:['Solo en septiembre','Dos veces al año','Cuando quiera, tras la admisión y la matrícula','Cuando se llena el grupo'],a:2,e:'Formato asincrónico, sin convocatoria fija.'},
+ {q:'¿Cuántas clases en directo hay por tema en el MBA?',o:['Ninguna','Una por tema, también en diferido','Una al mes','Diaria'],a:1,e:'Generalmente una clase en directo por tema, revisable en diferido.'},
+ {q:'¿Cuánto destina Unisport a becas y ayudas?',o:['Más de 50.000 €','Más de 500.000 €','Más de 5 millones','No ofrece becas'],a:1,e:'Más de 500.000 € en ayudas.'},
+ {q:'¿Dónde fue el Stage Internacional de 2025?',o:['Miami','Las Vegas','Londres','Andorra'],a:1,e:'Miami en 2024, Las Vegas en 2025 y en 2026 Madrid y Ciudad de México.'},
+ {q:'¿Cuánto dura la especialización FutureSports?',o:['4 semanas','14 semanas','6 meses','1 año'],a:1,e:'14 semanas, sumable a cualquier curso o máster.'},
+ {q:'Según la web, ¿qué peso tiene el sector deportivo en el PIB español?',o:['0,5 %','3,3 %','10 %','15 %'],a:1,e:'El 3,3 % del PIB, con más de 250.000 empleos.'},
+ {q:'¿Qué es ProfIA?',o:['Un tutor humano por WhatsApp','Un asistente de estudio con IA integrado en el temario, común a las marcas del Grupo','Una app de exámenes','Un sustituto del temario'],a:1,e:'Complementa el temario y la metodología, sin sustituirlos.'}
+];
+const QUOTES=[
+ ['Samuel García','MBA Sports Management','La flexibilidad ayuda mucho a organizarse cuando hay que compaginarlo con la vida laboral y familiar. Los video-learnings y las sesiones en directo para resolver dudas le dan un plus.'],
+ ['Pol Garcia','MBA Sports Management','El método online me ha permitido compaginarlo con mi trabajo, y eso es lo que más valoro.'],
+ ['Fuensanta Morillo','Alumna de Unisport','Gracias a la formación estoy desarrollando mi carrera en la consultoría deportiva. Mención especial a los Stages Técnicos.'],
+ ['Carlos Calles','Experto en Coaching Deportivo (desde México)','Unisport es la gran opción para estudiar a tu ritmo de manera remota.'],
+ ['Ainhoa Ostolaza','Máster de Coaching','Un viaje enriquecedor que ha superado mis expectativas en todos los sentidos.'],
+ ['Paola Araiza','Alumna de Unisport','Gran atención por parte de todos los profesores; la plataforma es ideal para aprender.']
+];
+const GAMECHANGERS=[
+ ['Marc Gasol','Baloncesto · MBA Sports Management','«Te tienes que preparar para el futuro para cuando el deporte se acabe.»'],
+ ['Vega Gimeno','Oro olímpico en baloncesto 3×3, París 2024 · MBA','Cree que el máster le puede abrir puertas.'],
+ ['Aarón Ñíguez','Futbolista y propietario del Club Costa City · MBA','Dice que la formación ha sido fundamental para crecer.'],
+ ['Ibai Azurmendi','Ciclista del Euskaltel-Euskadi · Máster en Coaching','Cree que Unisport le puede ayudar a acercarse a los ciclistas.'],
+ ['Sara Ouzande','Piragüista olímpica · Curso de Coaching Deportivo','Seis veces subcampeona del mundo en aguas tranquilas.']
+];
+const MOTIVES=[
+ {say:'«Soy deportista y pienso en mi futuro»',line:'masters',pts:['Cuenta las historias #GameChangers: Marc Gasol, Vega Gimeno, Aarón Ñíguez…','Propón el MBA Sports Management o el Máster en Dirección de Entidades Deportivas: su experiencia es un activo para dirigir.','El formato asincrónico es compatible con entrenamientos y competiciones.']},
+ {say:'«Me apasiona el deporte y quiero trabajar en el sector»',line:'masters',pts:['Usa los datos del sector: más de 250.000 empleos y el 3,3 % del PIB en España.','El MBA es la puerta de entrada más completa y la mejor valorada en rankings.','Refuerza con empleabilidad: prácticas opcionales, ofertas del sector y coaching para el empleo.']},
+ {say:'«Vengo del marketing, la comunicación, el derecho o la nutrición»',line:'masters',pts:['Ofrece el máster de su área: Marketing y Patrocinio, Periodismo y Comunicación, Derecho Deportivo o Nutrición Deportiva.','Destaca que aprenderá con profesionales en activo del sector.','Si tiene titulación universitaria relacionada, explica la acreditación UDIMA (consulta condiciones).']},
+ {say:'«Quiero algo más corto o probar antes»',line:'cursos',pts:['Los cursos de experto permiten especializarse en un área concreta.','Hay cursos de gestión, eventos, eSports, periodismo, social media y coaching.','Más adelante puede dar el salto al máster del área.']},
+ {say:'«Vivo en Latinoamérica o quiero validez fuera de España»',line:'espec',pts:['Unisport tiene alumnos de más de 30 países.','El RVOE de la SEP de México facilita el reconocimiento en Latinoamérica (confirma qué formaciones lo tienen).','Si estudia en inglés, el título lo expide la University of Chichester.']}
+];
+const STAGE=[['Londres','Edición anterior'],['Barcelona','Edición anterior'],['Andorra','Edición anterior'],['Miami','2024'],['Las Vegas','2025'],['Madrid','2026'],['Ciudad de México','Octubre 2026']];
+const PARTNERS=['Consejo Superior de Deportes','LaLiga','Real Sociedad','Cádiz CF','Federación Española de Rugby','Federación Mexicana de Fútbol','Federació Catalana de Basquetbol','Panenka','Madrid Soccer Revolution','SportBusiness'];
+
+/* ---------- Estado ---------- */
+const KEY='us-formacion-v1';
+let state={visited:{},quizBest:0,drillBest:0,objBest:0};
+try{const s=localStorage.getItem(KEY);if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}scheduleSync();}
+try{const t=localStorage.getItem('us-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+function isDone(id){
+  if(id==='practica')return state.quizBest>=80;
+  if(id==='objeciones')return state.objBest>=75;
+  return !!state.visited[id];
+}
+const doneCount=()=>MODULES.filter(m=>isDone(m.id)).length;
+const points=()=>state.quizBest+state.drillBest*10+state.objBest+doneCount()*10;
+
+/* ---------- Ilustraciones ---------- */
+function bannerArt(i){return `<svg class="art" viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="72" fill="rgba(255,255,255,.14)"/><circle cx="75" cy="75" r="52" fill="rgba(255,255,255,.18)"/><g transform="translate(43 43)" color="#fff">${ico(i,64,1.8)}</g></svg>`;}
+function donut(p,c='var(--brand)',size=170,label=p+'%'){
+  const r=70,C=2*Math.PI*r;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 170 170" role="img" aria-label="${label}"><circle cx="85" cy="85" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="22"/><circle cx="85" cy="85" r="${r}" fill="none" stroke="${c}" stroke-width="22" stroke-linecap="round" stroke-dasharray="${C*p/100} ${C}" transform="rotate(-90 85 85)"/><text x="85" y="97" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="40" fill="var(--ink)">${label}</text></svg>`;
+}
+function heroArt(){
+  const tile=(x,y,c,ic,r,fg='#0B0B0B')=>`<g transform="translate(${x} ${y}) rotate(${r} 55 55)"><rect width="110" height="110" rx="26" fill="${c}"/><g transform="translate(31 31)" color="${fg}">${ico(ic,48,2.2)}</g></g>`;
+  return `<svg viewBox="0 0 440 380" role="img" aria-label="Áreas del deporte">
+  <circle cx="230" cy="190" r="170" fill="#1A1A1A"/><circle cx="230" cy="190" r="120" fill="none" stroke="#8AFF33" stroke-width="2" stroke-dasharray="2 10"/>
+  <path d="M60 300 Q230 120 400 300" fill="none" stroke="#8AFF33" stroke-width="3" opacity=".5"/>
+  ${tile(60,40,'#8AFF33','trophy',-8)}${tile(260,30,'#FFFFFF','mic',7)}${tile(40,220,'#FF5A36','target',6,'#fff')}${tile(270,215,'#5B8CFF','chart',-6,'#fff')}
+  <g transform="translate(175 135)"><circle cx="55" cy="55" r="55" fill="#8AFF33"/><g transform="translate(29 27)" color="#0B0B0B">${ico('ball',52,2.2)}</g></g>
+  <circle cx="400" cy="120" r="9" fill="#8AFF33"/><circle cx="30" cy="160" r="6" fill="#fff"/><circle cx="215" cy="355" r="7" fill="#8AFF33"/>
+  </svg>`;
+}
+function cpArt(){
+  return `<svg viewBox="0 0 320 240" role="img" aria-label="Título y acreditaciones">
+  <rect x="40" y="30" width="240" height="170" rx="14" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/>
+  <rect x="56" y="46" width="208" height="138" rx="8" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="3 5"/>
+  <text x="160" y="80" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="22" fill="var(--ink)">UNISPORT</text>
+  <rect x="96" y="96" width="128" height="7" rx="3.5" fill="var(--line)"/><rect x="88" y="112" width="144" height="7" rx="3.5" fill="var(--line)"/><rect x="104" y="128" width="112" height="7" rx="3.5" fill="var(--line)"/>
+  <circle cx="232" cy="176" r="34" fill="#8AFF33"/><path d="M216 202l-6 30 22-12 22 12-6-30" fill="var(--ink)"/><circle cx="232" cy="176" r="24" fill="none" stroke="#0B0B0B" stroke-width="2"/>
+  <text x="232" y="174" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="15" fill="#0B0B0B">60</text>
+  <text x="232" y="189" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="11" fill="#0B0B0B">ECTS</text>
+  <text x="70" y="168" font-family="Barlow,sans-serif" font-weight="700" font-size="12" fill="var(--muted)">UDIMA · CHICHESTER · RVOE</text>
+  </svg>`;
+}
+const pill=(arr)=>arr.map(([i,b,p,c])=>`<div class="pillar" style="--pc:${c}"><div class="ic">${ico(i)}</div><b>${b}</b><p>${p}</p></div>`).join('');
+function renderStatic(){
+  $('#heroArt').innerHTML=heroArt();
+  $('#homeFacts').innerHTML=[['clock','+25','años formando directivos del deporte'],['users','+15.000','alumnos de más de 30 países'],['trophy','N.º 1','MBA especializado de España, PortalMBA 2024-2026'],['cap','1.500 h','y 60 ECTS en cada máster']].map(([i,n,t])=>`<div class="fact"><div class="ic">${ico(i)}</div><div><strong>${n}</strong><span>${t}</span></div></div>`).join('');
+  document.querySelectorAll('.banner').forEach(b=>{
+    const k=b.dataset.b;const [st0,h,p]=BANNERS[k];const m=MODULES.find(x=>x.id===k);const st=m?'Módulo '+(MODULES.indexOf(m)+1):st0;
+    b.style.setProperty('--bc',m?m.c:'#0B0B0B');
+    b.innerHTML=`<div><div class="step">${st}</div><h2>${h}</h2><p>${p}</p></div>${bannerArt(m?m.i:'trophy')}`;
+  });
+  document.querySelectorAll('[data-tip]').forEach(t=>{t.innerHTML=`<span class="ic">${ico('bulb')}</span><p><b>Para la llamada:</b> ${t.innerHTML}</p>`;});
+  document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=ico(e.dataset.ic));
+  $('#brandPillars').innerHTML=pill([['star','Expertise','La primera escuela de negocios del deporte: más de 25 años y más de 15.000 alumnos de más de 30 países.','var(--brand)'],['trophy','Liderazgo','Oferta elegida como la mejor de Europa por SportBusiness, con docentes referentes del sector.','var(--c-cursos)'],['brief','Empleabilidad','Plan de empleabilidad, acceso a prácticas y bolsa de empleo propia.','var(--c-espec)'],['target','Inconformismo','Ser mejores cada día: masterclasses constantes y convenios de prácticas en continua actualización.','var(--coral)']]);
+  $('#rankCards').innerHTML=[['PortalMBA','Mejor MBA especializado de España','2024, 2025 y 2026, por tercer año consecutivo'],['SportBusiness','Mejor máster online en gestión deportiva de Europa','Y segundo del mundo · Postgraduate Ranking 2023'],['Clupik y Másters.es','Top 3 másteres de gestión deportiva','2025']].map(([s,t,d])=>`<div class="rank-card"><span class="rk">${ico('trophy',28)}</span><small>${s}</small><b>${t}</b><span>${d}</span></div>`).join('');
+  $('#pillarsMetodo').innerHTML=pill([['compass','Online y flexible','Se adapta a la vida del alumno.','var(--brand)'],['clock','Campus 24/7','Accesible las 24 horas, todos los días del año, desde cualquier dispositivo.','var(--c-cursos)'],['users','Tutor individual','Para guiar y resolver las dudas que vayan surgiendo.','var(--c-espec)'],['doc','Material actualizado','Para estar al día de las últimas novedades del sector.','var(--coral)'],['mic','Clases en directo','Impartidas por profesionales en activo.','var(--brand)'],['eye','Seguimiento personalizado','A lo largo de toda la formación.','var(--c-cursos)'],['plane','Estancias internacionales','El Stage técnico anual en un destino diferente.','var(--c-espec)'],['brief','Prácticas','En entidades deportivas.','var(--coral)']]);
+  $('#sectorFacts').innerHTML=[['users','+250.000','personas empleadas en el sector deportivo en España'],['chart','3,3 %','del PIB español'],['trophy','+39.000 M€','de volumen de negocio']].map(([i,n,t])=>`<div class="fact"><div class="ic">${ico(i)}</div><div><strong>${n}</strong><span>${t}</span></div></div>`).join('');
+  $('#pillarsEmpleo').innerHTML=pill([['compass','Orientación laboral','Expertos que ayudan a sacar partido al perfil del alumno.','var(--brand)'],['brief','Prácticas opcionales','En entidades deportivas y empresas, para aplicar lo aprendido.','var(--c-cursos)'],['search','Ofertas del sector','Unisport filtra a diario ofertas de distintos portales para sus perfiles.','var(--c-espec)'],['users','Coaching para el empleo','Con un coach de desarrollo profesional; la evaluación inicial es gratuita.','var(--coral)'],['spark','Apoyo al emprendimiento','Valoración de la idea, búsqueda de financiación, formación y aceleración.','var(--brand)']]);
+  $('#partnerWall').innerHTML=PARTNERS.map(p=>`<div class="logo-tile">${esc(p)}</div>`).join('');
+  $('#fichaGrid').innerHTML=FICHAS.map(f=>`<button type="button" class="fcard" data-f="${f.id}" style="--lc:${CAT[f.line].color};--lt:${LINEMETA[f.line].t}"><div class="top"><span class="badge">${CAT[f.line].name}</span><div class="ic">${ico(f.i,34)}</div></div><div class="body"><b>${esc(f.name)}</b><span>${esc(f.tipo)}</span></div></button>`).join('');
+  document.querySelectorAll('.fcard').forEach(b=>b.onclick=()=>openFicha(b.dataset.f));
+  $('#cpArt').innerHTML=cpArt();
+  $('#accPillars').innerHTML=pill([['award','Título propio de Unisport','Diploma privado que certifica la formación especializada. Se obtiene siempre.','var(--ink)'],['cap','Acreditación UDIMA','Voluntaria, con valor académico adicional. Requiere titulación universitaria previa relacionada, documentación en el primer mes y tasas.','var(--brand)'],['star','University of Chichester','Título universitario oficial del Reino Unido si se cursa en inglés.','var(--c-cursos)'],['pin','RVOE · SEP México','Validez oficial en México que facilita el reconocimiento en Latinoamérica.','var(--coral)']]);
+  $('#passes').innerHTML=STAGE.map(([c,y],i)=>`<div class="pass${i>=5?' now':''}"><span class="pl">${ico('plane',20)}</span><small>${esc(y)}</small><b>${esc(c)}</b></div>`).join('');
+  $('#stagePillars').innerHTML=pill([['plane','Online + presencial','Combina la flexibilidad del online con lo mejor de la presencialidad.','var(--brand)'],['users','Red de contactos','Acceso a profesionales de primer nivel del sector.','var(--c-cursos)'],['brief','Empleabilidad','Junto al plan de empleabilidad, mejora las opciones de ser contratado.','var(--c-espec)'],['eye','Visión internacional','La industria deportiva desde dentro, con compañeros de distintas nacionalidades.','var(--coral)']]);
+  $('#motives').innerHTML=MOTIVES.map(m=>`<div class="motive" style="--lc:${CAT[m.line].color};--lt:${LINEMETA[m.line].t}"><div class="mh"><div class="ic">${ico(LINEMETA[m.line].i)}</div><div><p class="say">${m.say}</p><p class="to">Línea: <b>${CAT[m.line].name}</b></p></div></div><div class="mb"><ul>${m.pts.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div></div>`).join('');
+  $('#objList').innerHTML=OBJ.map(o=>{const b=o.opts.find(x=>x[1]===2);return `<details class="group" style="--lc:var(--c-espec)"><summary><span class="gdot"></span>${esc(o.o)}</summary><p style="margin:0 0 8px"><b>Responde:</b> ${esc(b[0])}</p><p style="margin:0 0 14px;color:var(--muted);font-size:15px">${esc(o.tip)}</p></details>`;}).join('');
+  $('#profiaMock').innerHTML=`<div class="mock" role="img" aria-label="Ilustración de la pantalla de ProfIA"><div class="bar2"><i></i><i></i><i></i><span style="margin-left:8px">Tema 1 · Abrir con ProfIA</span></div><div class="split"><div class="pdf">Temario<span></span><span style="width:70%"></span><span></span><span style="width:50%"></span></div><div class="chatp"><div class="msg ai">Hola, soy ProfIA. Te ayudo a entender este tema: resúmenes, ejemplos, preguntas de repaso…</div><div class="msg me">Hazme 5 preguntas de repaso</div><div class="msg ai">Aquí tienes cinco preguntas basadas en el tema…</div><div class="tools">${[['doc','Resumen'],['mic','Podcast'],['cards','Flashcards'],['target','Preguntas']].map(([i,t])=>`<span>${ico(i,13)}${t}</span>`).join('')}</div></div></div></div><p style="font-size:13px;color:var(--muted)">Ilustración orientativa de la interfaz.</p>`;
+  $('#profiaFeat').innerHTML=pill([['chat','Resuelve dudas al momento','Respuestas inmediatas sobre el tema que está estudiando, sin límite de uso.','#5B3AA8'],['doc','Resúmenes del tema','Síntesis claras y un botón de resumen automático en un clic.','var(--brand)'],['bulb','Ejemplos concretos','Para entender y asimilar de forma práctica los conceptos difíciles.','var(--coral)'],['search','Busca en el temario','Encuentra referencias precisas dentro de todo el material del curso.','var(--c-cursos)'],['target','Preguntas de repaso','Baterías de autoevaluación a petición del alumno o sugeridas.','#C2412D'],['cards','Flashcards','Tarjetas basadas en recuerdo activo y repetición espaciada.','#0E8F79'],['mic','Podcast del tema','De 4 a 6 partes de 10 a 20 minutos. En piloto en algunas formaciones.','#7A3FE0']]);
+  $('#gameChangers').innerHTML=GAMECHANGERS.map(([n,r,q],i)=>`<figure class="gcard"><div class="gav">${esc(n.split(' ').map(x=>x[0]).join('').slice(0,2))}</div><b>${esc(n)}</b><small>${esc(r)}</small><p>${esc(q)}</p></figure>`).join('');
+  const AVC=['#2F8F0B','#1E5BD8','#B7790A','#7A3FE0','#E0461F','#0E8F79'];
+  $('#quotes').innerHTML=QUOTES.map(([n,c,t],i)=>`<figure class="quote"><blockquote>${esc(t)}</blockquote><figcaption><span class="av" style="background:${AVC[i%6]}">${esc(n[0])}</span><span><b>${esc(n)}</b>${esc(c)}</span></figcaption></figure>`).join('');
+}
+function openFicha(id){
+  const f=FICHAS.find(x=>x.id===id);const L=CAT[f.line];
+  const el=$('#fichaDetail');
+  el.innerHTML=`<article class="ficha-detail" style="--lc:${L.color};--lt:${LINEMETA[f.line].t}">
+   <div class="head"><div class="ic">${ico(f.i,40)}</div><div><small>${L.name} › ${esc(f.fam)} · ${esc(f.tipo)}</small><h3>${esc(f.name)}</h3></div></div>
+   <div class="ficha-grid">
+     <div><h4>Para quién</h4><p>${esc(f.perfil)}</p></div>
+     <div><h4>Qué consigue</h4><ul>${f.logra.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+     <div><h4>Pregunta para cualificar</h4><p>${esc(f.preg)}</p></div>
+     <div><h4>Alternativa o siguiente paso</h4><p>${esc(f.ruta)}</p></div>
+   </div>
+   <p class="ficha-say">${esc(f.say)}</p>
+   <div class="ficha-foot"><a class="btn" href="${B+f.path}" target="_blank" rel="noopener">Ver la ficha oficial</a><span>Salidas: ${esc(f.emp)}. Precio, becas y condiciones: consulta siempre la ficha oficial.</span></div>
+  </article>`;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ---------- Navegación ---------- */
+function renderNav(){
+  const cur=(location.hash||'#inicio').slice(1);
+  const a=(id,label,icon,num)=>`<li><a href="#${id}" class="${num!==null&&isDone(id)?'done':''}" ${cur===id?'aria-current="page"':''}><span class="dot" aria-hidden="true">${num===null?icon:(isDone(id)?'✓':num)}</span>${label}</a></li>`;
+  $('#path').innerHTML=a('inicio','Inicio','⌂',null)+MODULES.map((m,i)=>a(m.id,m.t,'',i+1)).join('')+(NO_RANK?'':'<li class="sep" role="presentation"></li>'+a('ranking','Ranking del equipo','★',null));
+  $('#modGrid').innerHTML=MODULES.map(m=>`<a class="mod ${isDone(m.id)?'done':''}" href="#${m.id}" style="--mc:${m.c}"><span class="ic">${ico(m.i)}</span><span><b>${m.t}</b><small>${m.d}</small></span></a>`).join('')+(NO_RANK?'':`<a class="mod" href="#ranking" style="--mc:#0B0B0B"><span class="ic">${ico('trophy')}</span><span><b>Ranking del equipo</b><small>Compara tus puntos con el resto de asesores</small></span></a>`);
+  const n=doneCount();
+  $('#progressText').textContent=`${n} de ${MODULES.length} módulos completados`;
+  $('#progressBar').style.width=(n/MODULES.length*100)+'%';
+  $('#sidePoints').textContent=points()+' pts';
+  $('#sQuiz').textContent=`Mejor: ${state.quizBest}%`;$('#sDrill').textContent=`Mejor: ${state.drillBest}/10`;$('#sObj').textContent=`Mejor: ${state.objBest}%`;
+}
+function route(){
+  const id=(location.hash||'#inicio').slice(1);
+  const valid=['inicio','ranking',...MODULES.map(m=>m.id)];
+  const v=valid.includes(id)?id:'inicio';
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='v-'+v));
+  if(!['inicio','practica','objeciones','ranking'].includes(v)&&!state.visited[v]){state.visited[v]=true;save();}
+  renderNav();window.scrollTo(0,0);
+}
+
+/* ---------- Catálogo ---------- */
+let curLine='masters';
+function renderLines(){
+  $('#lines').innerHTML=Object.entries(CAT).map(([k,l])=>{
+    const n=l.groups.reduce((a,gr)=>a+gr.items.length,0);
+    return `<button type="button" class="line-btn" style="--lc:${l.color};--lt:${LINEMETA[k].t}" aria-pressed="${k===curLine}" data-line="${k}"><b>${l.name}</b><span class="ic">${ico(LINEMETA[k].i)}</span><span class="count">${n}</span><span>${l.groups.length} ${l.groups.length===1?'área':'áreas'}</span></button>`;
+  }).join('');
+  document.querySelectorAll('.line-btn').forEach(b=>b.onclick=()=>{curLine=b.dataset.line;renderLines();renderGroups();});
+}
+function renderGroups(){
+  const L=CAT[curLine];const q=slug($('#q').value.trim());
+  const certOnly=$('#certOnly').checked&&curLine==='cursos';
+  $('#certWrap').style.display='none';
+  $('#lineDesc').innerHTML=`${esc(L.desc)} <a href="${B+L.all}" target="_blank" rel="noopener">Ver la línea en la web</a>`;
+  const max=Math.max(...L.groups.map(g=>g.items.length));
+  $('#chartTitle').textContent=`${L.name}: formaciones por área`;
+  $('#famChart').innerHTML=L.groups.slice().sort((a,b)=>b.items.length-a.items.length).map(g=>`<div class="hbar" style="--lc:${L.color}"><span>${esc(g.name)}</span><span class="track"><i style="width:${g.items.length/max*100}%"></i></span><b>${g.items.length}</b></div>`).join('');
+  let html='';let total=0;
+  L.groups.forEach(gr=>{
+    const items=gr.items.filter(it=>(!q||slug(it).includes(q)||slug(gr.name).includes(q))&&(!certOnly||CERT.has(it)));
+    if(!items.length)return;total+=items.length;
+    html+=`<details class="group" style="--lc:${L.color}" ${q||certOnly?'open':''}><summary><span class="gdot"></span>${esc(gr.name)}<small>${items.length}</small></summary><ul class="items">${items.map(it=>`<li><a href="${B+(URLS[it]||gr.path)}" target="_blank" rel="noopener">${esc(it)}</a>${NUEVO.has(it)?'<span class="tag new">Nuevo</span>':''}</li>`).join('')}</ul></details>`;
+  });
+  $('#groups').innerHTML=total?html:`<p class="empty">No hay formaciones de ${esc(L.name)} que coincidan. Prueba con otra palabra o cambia de línea.</p>`;
+}
+
+/* ---------- Ejercicios ---------- */
+function resultPanel(area,pct,label,msg,again,link){
+  area.innerHTML=`<div class="panel"><div class="result">${donut(pct,pct>=75?'var(--brand)':'var(--c-pl)',150,label)}<div><h3>${msg[0]}</h3><p>${msg[1]}</p><div class="row"><button class="btn" type="button" id="again">Repetir</button><a class="btn ghost" href="#${link[0]}">${link[1]}</a><a class="btn ghost" href="#ranking">Ver ranking</a></div></div></div></div>`;
+  $('#again').onclick=again;renderNav();
+}
+function startQuiz(){
+  const qs=shuffle(QUIZ).slice(0,10);let i=0,ok=0;const area=$('#practiceArea');
+  function show(){
+    if(i>=qs.length){const pct=Math.round(ok/qs.length*100);if(pct>state.quizBest){state.quizBest=pct;save();}
+      return resultPanel(area,pct,pct+'%',[`${ok} de ${qs.length} correctas`,pct>=80?'Módulo completado: dominas los datos clave.':'Necesitas un 80%. Repasa los módulos 1 a 3 y 6 y vuelve a intentarlo.'],startQuiz,['marca','Repasar la marca']);}
+    const Q=qs[i];
+    area.innerHTML=`<div class="panel"><div class="qmeta"><span>Pregunta ${i+1} de ${qs.length}</span><span>${ok} aciertos</span></div><div class="pbar"><i style="width:${i/qs.length*100}%"></i></div><p class="qtext">${esc(Q.q)}</p><div class="opts">${Q.o.map((o,k)=>`<button type="button" class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div><p class="feedback" aria-live="polite"></p><div class="row" id="nx"></div></div>`;
+    area.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const right=+b.dataset.k===Q.a;if(right)ok++;
+      area.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===Q.a)x.classList.add('right');});
+      if(!right)b.classList.add('wrong');
+      area.querySelector('.feedback').textContent=(right?'Correcto. ':'No es esa. ')+Q.e;
+      area.querySelector('#nx').innerHTML=`<button class="btn" type="button">${i+1<qs.length?'Siguiente pregunta':'Ver resultado'}</button>`;
+      const n=area.querySelector('#nx button');n.onclick=()=>{i++;show();};n.focus();
+    });
+  }
+  show();area.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function startDrill(){
+  const pool=[];Object.entries(CAT).forEach(([k,l])=>l.groups.forEach(gr=>gr.items.forEach(it=>pool.push({k,it,gr:gr.name}))));
+  const AREAS=[...new Set(pool.map(p=>p.gr))];
+  const rounds=[];while(rounds.length<10)rounds.push(...shuffle(pool));rounds.length=10;let i=0,ok=0;const area=$('#practiceArea');
+  function show(){
+    if(i>=rounds.length){if(ok>state.drillBest){state.drillBest=ok;save();}
+      return resultPanel(area,ok*10,ok+'/10',[ok>=8?'Te mueves por el catálogo con soltura':'Sigue practicando',ok>=8?'Cada ronda saca formaciones distintas: prueba otra.':'Date una vuelta por el catálogo y prueba otra ronda.'],startDrill,['catalogo','Ir al catálogo']);}
+    const R=rounds[i];const opts=shuffle([R.gr,...shuffle(AREAS.filter(a=>a!==R.gr)).slice(0,3)]);
+    area.innerHTML=`<div class="panel"><div class="qmeta"><span>Formación ${i+1} de 10</span><span>${ok} aciertos</span></div><div class="pbar"><i style="width:${i*10}%"></i></div><p class="kicker" style="margin-top:14px;color:var(--muted)">¿A qué área pertenece?</p><p class="drill-name">${esc(R.it)}</p><div class="drill-opts areas">${opts.map(a=>`<button type="button" class="opt" data-a="${esc(a)}"><b>${esc(a)}</b></button>`).join('')}</div><p class="feedback" aria-live="polite"></p><div class="row" id="nx"></div></div>`;
+    area.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const right=b.dataset.a===R.gr;if(right)ok++;
+      area.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.a===R.gr)x.classList.add('right');});
+      if(!right)b.classList.add('wrong');
+      area.querySelector('.feedback').textContent=`${right?'Correcto':'No es esa'}: está en ${CAT[R.k].name} › ${R.gr}.`;
+      area.querySelector('#nx').innerHTML=`<button class="btn" type="button">${i+1<10?'Siguiente':'Ver resultado'}</button>`;
+      const n=area.querySelector('#nx button');n.onclick=()=>{i++;show();};n.focus();
+    });
+  }
+  show();area.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function startObj(){
+  const list=shuffle(OBJ);let i=0,pts=0;const area=$('#objArea');
+  function show(){
+    if(i>=list.length){const pct=Math.round(pts/(list.length*2)*100);if(pct>state.objBest){state.objBest=pct;save();}
+      return resultPanel(area,pct,pct+'%',[pct>=75?'Módulo completado':'Casi lo tienes',pct>=75?'Respondes con datos reales y sin prometer de más.':'Necesitas un 75%. Revisa la lista de objeciones y repite.'],startObj,['certificados','Repasar certificados']);}
+    const O=list[i];const opts=shuffle(O.opts);
+    area.innerHTML=`<div class="panel"><div class="qmeta"><span>Objeción ${i+1} de ${list.length}</span><span>${pts} puntos</span></div><div class="pbar"><i style="width:${i/list.length*100}%"></i></div>
+    <div class="client"><span style="flex:none;width:48px;height:48px;border-radius:50%;background:var(--c-opos);color:#fff;display:grid;place-items:center">${ico('users',24)}</span><div class="bubble">${esc(O.o)}</div></div>
+    <p style="margin:0 0 10px;color:var(--muted)">¿Qué respondes?</p><div class="opts">${opts.map((o,k)=>`<button type="button" class="opt" data-k="${k}">${esc(o[0])}</button>`).join('')}</div><p class="feedback" aria-live="polite"></p><div class="row" id="nx"></div></div>`;
+    area.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const sel=opts[+b.dataset.k];pts+=sel[1];
+      area.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k][1]===2)x.classList.add('right');});
+      if(sel[1]===0)b.classList.add('wrong');else if(sel[1]===1)b.classList.add('meh');
+      area.querySelector('.feedback').innerHTML=`<b>${sel[1]===2?'Muy bien.':sel[1]===1?'Respuesta floja.':'Cuidado.'}</b> ${esc(sel[2])}`;
+      area.querySelector('#nx').innerHTML=`<button class="btn" type="button">${i+1<list.length?'Siguiente objeción':'Ver resultado'}</button>`;
+      const n=area.querySelector('#nx button');n.onclick=()=>{i++;show();};n.focus();
+    });
+  }
+  show();area.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ---------- Ranking compartido ---------- */
+let DB=null,USER=null,MYID=null,syncT=null,rankRows=[];
+const COLORS=['#2F8F0B','#2C64D6','#C27A08','#7348C9','#C2412D','#0E8F79','#B5338A','#3D6B8C'];
+const colorFor=id=>{let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;return COLORS[h%COLORS.length];};
+function scheduleSync(){clearTimeout(syncT);syncT=setTimeout(syncScore,800);}
+async function syncScore(){
+  if(!DB||!MYID)return;
+  const p=points();if(p===0)return;
+  const body={points:p,quiz:state.quizBest,drill:state.drillBest,obj:state.objBest,modules:doneCount(),updatedAt:Date.now()};
+  try{await DB.collection('ranking').doc(MYID).set(body);}catch(e){}
+}
+async function renderRank(){
+  const area=$('#rankArea');
+  if(!DB){area.innerHTML=`<div class="panel"><h3>Ranking no disponible en esta vista</h3><p>El ranking compartido funciona al abrir la página publicada en claude.ai con tu cuenta de la organización. Tus puntos se siguen guardando en este navegador: llevas <b>${points()}</b>.</p></div>`;return;}
+  if(!rankRows.length){area.innerHTML=`<div class="panel"><h3>Todavía no hay nadie en el ranking</h3><p>Completa módulos o ejercicios y serás el primero. Ahora tienes <b>${points()}</b> puntos.</p><div class="row"><a class="btn" href="#practica">Ir a los ejercicios</a></div></div>`;return;}
+  const ids=rankRows.map(r=>r.id);let ps={};
+  try{ps=USER?await USER.profiles(ids):{};}catch(e){}
+  const nm=id=>(ps[id]&&ps[id].name)||'Asesor';
+  const top=rankRows.slice(0,3);const order=[1,0,2].filter(i=>top[i]);
+  const heights={0:140,1:105,2:80};
+  let html=`<div class="podium">${order.map(i=>{const r=top[i];const c=colorFor(r.id);return `<div class="pod"><div class="av" style="background:${c}">${esc(nm(r.id)[0]||'A')}</div><b class="pname" data-id="${r.id}"></b><small>${r.points} pts</small><div class="block" style="height:${heights[i]}px;background:${i===0?'var(--sun)':i===1?'var(--c-fp)':'var(--c-pl)'};color:${i===0?'#0B0B0B':'#fff'}">${i+1}</div></div>`;}).join('')}</div>`;
+  html+=`<div class="scroll"><table class="rtable"><thead><tr><th>#</th><th>Asesor</th><th class="n">Test</th><th class="n">Clasif.</th><th class="n">Objec.</th><th class="n">Módulos</th><th class="n">Puntos</th></tr></thead><tbody>`;
+  rankRows.forEach((r,i)=>{html+=`<tr class="${r.id===MYID?'me':''}"><td>${i+1}</td><td><span class="who"><span class="av" style="background:${colorFor(r.id)}">${esc(nm(r.id)[0]||'A')}</span><span class="pname" data-id="${r.id}"></span>${r.id===MYID?' <small>(tú)</small>':''}</span></td><td class="n">${r.quiz}%</td><td class="n">${r.drill}/10</td><td class="n">${r.obj}%</td><td class="n">${r.modules}</td><td class="n"><b>${r.points}</b></td></tr>`;});
+  html+='</tbody></table></div>';
+  if(MYID&&!rankRows.some(r=>r.id===MYID))html+=`<p class="line-desc">Aún no apareces: completa un módulo o ejercicio y entrarás en el ranking.</p>`;
+  area.innerHTML=html;
+  area.querySelectorAll('.pname').forEach(el=>el.textContent=nm(el.dataset.id));
+}
+let NO_RANK=false;
+function hideRanking(){NO_RANK=true;renderNav();if((location.hash||'').slice(1)==='ranking')location.hash='#inicio';}
+async function initShared(){
+  try{
+    if(!window.claude||!window.claude.use){hideRanking();return;}
+    const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+    DB=db;USER=user;
+    if(USER){try{MYID=await USER.id();}catch(e){}}
+    if(!DB){hideRanking();return;}
+    DB.collection('ranking').orderBy('points','desc').limit(50).onSnapshot(snap=>{
+      rankRows=snap.docs.filter(d=>d.exists).map(d=>{const x=d.data();return {id:d.id,points:+x.points||0,quiz:+x.quiz||0,drill:+x.drill||0,obj:+x.obj||0,modules:+x.modules||0};});
+      renderRank();
+    },()=>{DB=null;renderRank();});
+    scheduleSync();
+  }catch(e){renderRank();}
+}
+
+/* ---------- Arranque ---------- */
+
+/* ---------- Buscador global ---------- */
+let GIDX=[],gSel=-1,gShown=[];
+const GTYPES={mod:['Módulo','#0B0B0B','home'],sec:['Apartado','#2F8F0B','doc'],mas:['Máster','var(--c-masters)','cap'],cur:['Curso','var(--c-cursos)','book'],esp:['Especialización','var(--c-espec)','spark'],ficha:['Ficha','#E0461F','cards'],obj:['Objeción','#7A3FE0','chat'],stage:['Stage','#0E8F79','plane'],op:['Opinión','#B7790A','heart'],faq:['Pregunta','#B7790A','target']};
+function buildIndex(){
+  GIDX=[];
+  const add=(type,title,sub,extra,act)=>GIDX.push({type,title,sub,k:slug(title+' '+sub+' '+(extra||'')),kt:slug(title),act});
+  MODULES.forEach((m,i)=>{const b=BANNERS[m.id];add('mod',m.t,`Módulo ${i+1} · ${m.d}`,b?b[1]+' '+b[2]:'',()=>go(m.id));});
+  document.querySelectorAll('.view').forEach(v=>{
+    const id=v.id.slice(2);const m=MODULES.find(x=>x.id===id);if(!m)return;
+    v.querySelectorAll('h3').forEach(h=>{
+      const blk=h.closest('section')||h.parentElement;
+      add('sec',h.textContent.trim(),m.t,blk?blk.textContent.slice(0,600):'',()=>go(id,()=>scrollFlash(h)));
+    });
+  });
+  const TT={masters:'mas',cursos:'cur',espec:'esp'};
+  Object.entries(CAT).forEach(([k,l])=>l.groups.forEach(g=>g.items.forEach(it=>{
+    let sub=`${l.name} › ${g.name}`;
+    if(k==='masters')sub+=' · 1.500 h · 60 ECTS';if(NUEVO.has(it))sub+=' · Nuevo';
+    add(TT[k],it,sub,'',()=>go('catalogo',()=>{curLine=k;$('#q').value=it;$('#certOnly').checked=false;renderLines();renderGroups();scrollFlash($('#groups .group')||$('#groups'));}));
+  })));
+  FICHAS.forEach(f=>add('ficha',f.name,`Ficha comercial · ${f.tipo}`,f.perfil+' '+f.ruta,()=>go('fichas',()=>openFicha(f.id))));
+  OBJ.forEach((o,i)=>{const b=o.opts.find(x=>x[1]===2);add('obj',o.o.replace(/[«»]/g,''),'Cómo responder: '+b[0].slice(0,90)+'…',b[0]+' '+o.tip,()=>go('objeciones',()=>{const d=document.querySelectorAll('#objList details')[i];if(d){d.open=true;scrollFlash(d);}}));});
+  STAGE.forEach(([c,y])=>add('stage',c,'Stage Internacional · '+y,'estancia viaje destino',()=>go('stage',()=>scrollFlash($('#passes')))));
+  QUOTES.concat(GAMECHANGERS).forEach(([n,c,t])=>add('op',n,c,t,()=>go('opiniones')));
+  QUIZ.forEach(q=>add('faq',q.q,q.e,q.o[q.a],()=>go('practica')));
+}
+function go(id,after){
+  closeSearch();
+  const cur=(location.hash||'#inicio').slice(1);
+  if(cur===id){after&&after();return;}
+  location.hash='#'+id;
+  if(after)setTimeout(after,60);
+}
+function scrollFlash(el){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+function hl(t,terms){const src=slug(t);const mark=new Array(t.length).fill(false);terms.forEach(w=>{if(w.length<2)return;const i=src.indexOf(w);if(i>=0)for(let j=i;j<i+w.length;j++)mark[j]=true;});let out='',on=false;for(let i=0;i<t.length;i++){if(mark[i]&&!on){out+='<mark>';on=true;}if(!mark[i]&&on){out+='</mark>';on=false;}out+=esc(t[i]);}if(on)out+='</mark>';return out;}
+function runSearch(){
+  const raw=$('#gq').value.trim();const panel=$('#gpanel');
+  if(raw.length<2){closeSearch(false);return;}
+  const terms=slug(raw).split(/\s+/).filter(Boolean);
+  const res=GIDX.map(e=>{
+    if(!terms.every(t=>e.k.includes(t)))return null;
+    let sc=0;terms.forEach(t=>{if(e.kt.startsWith(t))sc+=6;else if(e.kt.includes(t))sc+=3;else sc+=1;});
+    if(e.type==='mod')sc+=2;
+    return [sc,e];
+  }).filter(Boolean).sort((a,b)=>b[0]-a[0]).slice(0,40).map(x=>x[1]);
+  gShown=res;gSel=res.length?0:-1;
+  $('#gcount').textContent=res.length?`${res.length===40?'40+':res.length} resultados para «${raw}»`:`Sin resultados para «${raw}»`;
+  $('#gresults').innerHTML=res.length?res.map((e,i)=>{const [lab,c,ic]=GTYPES[e.type];return `<button type="button" class="gres${i===0?' sel':''}" role="option" data-i="${i}" style="--gc:${c}"><span class="ic">${ico(ic,18)}</span><span><b>${hl(e.title,terms)}</b><small>${esc(e.sub)}</small></span><span class="k">${lab}</span></button>`;}).join(''):`<p class="gempty">Prueba con otra palabra: el nombre de una formación, una ciudad, «MBA», «UDIMA», «beca»…</p>`;
+  $('#gresults').querySelectorAll('.gres').forEach(b=>b.onclick=()=>gShown[+b.dataset.i].act());
+  panel.hidden=false;
+}
+function closeSearch(clear=true){$('#gpanel').hidden=true;if(clear){$('#gq').value='';$('#gq').blur();}}
+function moveSel(d){const items=$('#gresults').querySelectorAll('.gres');if(!items.length)return;gSel=(gSel+d+items.length)%items.length;items.forEach((x,i)=>x.classList.toggle('sel',i===gSel));items[gSel].scrollIntoView({block:'nearest'});}
+$('#gq').addEventListener('input',runSearch);
+$('#gq').addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'){e.preventDefault();moveSel(1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();moveSel(-1);}
+  else if(e.key==='Enter'&&gSel>=0&&gShown[gSel]){e.preventDefault();gShown[gSel].act();}
+  else if(e.key==='Escape'){closeSearch();}
+});
+$('#gclose').onclick=()=>closeSearch();
+document.addEventListener('keydown',e=>{
+  const tag=(document.activeElement&&document.activeElement.tagName)||'';
+  if((e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test(tag))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){e.preventDefault();$('#gq').focus();}
+});
+document.addEventListener('click',e=>{if(!$('#gpanel').hidden&&!e.target.closest('#gpanel')&&!e.target.closest('.gsearch'))closeSearch(false);});
+
+$('#startQuiz').onclick=startQuiz;$('#startDrill').onclick=startDrill;$('#startObj').onclick=startObj;
+$('#themeBtn').onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('us-theme',r.dataset.theme);}catch(e){}};
+$('#q').addEventListener('input',renderGroups);$('#certOnly').addEventListener('change',renderGroups);
+renderStatic();renderLines();renderGroups();buildIndex();
+window.addEventListener('hashchange',route);route();
+initShared();
+</script>
+</body>
+</html>
